@@ -1,0 +1,88 @@
+/** 
+ * PREDICTIVE RESILIENCE THESIS TESTBED
+ * Architecture: Gateway -> Order -> Payment -> Inventory
+ * https://www.jhipster.tech/jdl/applications
+ *
+ * jhipster jdl ecommerce.jdl
+ */
+
+application {
+  config {
+    baseName gateway_service,
+    applicationType gateway,
+    packageName com.ecommerce.gateway,
+    authenticationType jwt,
+    prodDatabaseType postgresql,
+    clientFramework react,
+    serviceDiscoveryType consul,
+    buildTool maven
+  }
+}
+
+application {
+  config {
+    baseName order_service,
+    applicationType microservice,
+    packageName com.ecommerce.order,
+    authenticationType jwt,
+    prodDatabaseType postgresql,
+    serviceDiscoveryType consul,
+    buildTool maven
+    serverPort 8085
+  }
+  entities Order
+}
+
+application {
+  config {
+    baseName payment_service,
+    applicationType microservice,
+    packageName com.ecommerce.payment,
+    authenticationType jwt,
+    prodDatabaseType postgresql,
+    serviceDiscoveryType consul,
+    buildTool maven
+    serverPort 8090
+  }
+  entities Payment
+}
+
+application {
+  config {
+    baseName inventory_service,
+    applicationType microservice,
+    packageName com.ecommerce.inventory,
+    authenticationType jwt,
+    prodDatabaseType postgresql,
+    serviceDiscoveryType consul,
+    buildTool maven
+    serverPort 8095
+  }
+  entities Product
+}
+
+// --- Entities ---
+
+entity Order {
+  orderNumber String required,
+  totalAmount BigDecimal required,
+  status String
+}
+
+entity Payment {
+  transactionId String required,
+  amount BigDecimal required,
+  status String
+}
+
+entity Product {
+  sku String required,
+  name String required,
+  stockQuantity Integer required
+}
+
+// No complex relationships here to avoid Distributed Transaction overhead.
+// The logic will be handled via REST calls in the Java code.
+
+paginate Order, Payment, Product with pagination
+service Order, Payment, Product with serviceClass

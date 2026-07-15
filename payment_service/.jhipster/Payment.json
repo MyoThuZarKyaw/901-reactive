@@ -1,0 +1,30 @@
+{
+  "annotations": {
+    "changelogDate": "20231223064833"
+  },
+  "applications": ["payment_service"],
+  "clientRootFolder": "payment_service",
+  "databaseType": "sql",
+  "fields": [
+    {
+      "fieldName": "transactionId",
+      "fieldType": "String",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "amount",
+      "fieldType": "BigDecimal",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "status",
+      "fieldType": "String"
+    }
+  ],
+  "microserviceName": "payment_service",
+  "name": "Payment",
+  "pagination": "pagination",
+  "relationships": [],
+  "searchEngine": "no",
+  "service": "serviceClass"
+}

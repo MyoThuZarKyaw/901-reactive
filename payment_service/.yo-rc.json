@@ -1,0 +1,21 @@
+{
+  "generator-jhipster": {
+    "applicationIndex": 2,
+    "applicationType": "microservice",
+    "authenticationType": "jwt",
+    "baseName": "payment_service",
+    "buildTool": "maven",
+    "creationTimestamp": 1703314053141,
+    "entities": ["Payment"],
+    "jhipsterVersion": "9.2.0",
+    "jwtSecretKey": "MTYwOTk3YTk2NmUwYjMzOGZhZmY4MzE1YjAxNjk1MzVlYjE1ZTFkNTBiNjc2OWY1NWYyYjJmNjY2OTExYmYxZDdjMzUxOGVhNzczYmRiZmEzZGZkYzRhZjNjZTUyMDQyMzFkZTBjZmNmOGRhZjc3NDk3MmIwMGFhZDdlNWU1ZmI=",
+    "languages": ["en"],
+    "lastLiquibaseTimestamp": 1703314113000,
+    "nativeLanguage": "en",
+    "packageName": "com.ecommerce.payment",
+    "prodDatabaseType": "postgresql",
+    "serverPort": "8090",
+    "serviceDiscoveryType": "consul",
+    "skipClient": true
+  }
+}

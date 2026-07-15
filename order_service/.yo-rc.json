@@ -1,0 +1,21 @@
+{
+  "generator-jhipster": {
+    "applicationIndex": 1,
+    "applicationType": "microservice",
+    "authenticationType": "jwt",
+    "baseName": "order_service",
+    "buildTool": "maven",
+    "creationTimestamp": 1702169259220,
+    "entities": ["Order"],
+    "jhipsterVersion": "9.2.0",
+    "jwtSecretKey": "MTZiYWY0NTI0Zjc1NWVjMDk1ZGY0MzEyMmVlY2E0MzczMGNmNDEyYmYzMjQ0YTYxNjEwZDQ2NWNmYzJmNmY5ZjJkY2JiMjgwZDczMTNkMjc5MTJiODc3YmQ4YjNjN2Y2YzQwNmVjMThiNjgxZjkyZTVlYjZiZWJmOGFhMzNkNzM=",
+    "languages": ["en"],
+    "lastLiquibaseTimestamp": 1702169319000,
+    "nativeLanguage": "en",
+    "packageName": "com.ecommerce.order",
+    "prodDatabaseType": "postgresql",
+    "serverPort": "8085",
+    "serviceDiscoveryType": "consul",
+    "skipClient": true
+  }
+}
