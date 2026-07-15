@@ -6,16 +6,19 @@
     "baseName": "payment_service",
     "buildTool": "maven",
     "creationTimestamp": 1703314053141,
+    "defaultCommand": "app",
     "entities": ["Payment"],
-    "jhipsterVersion": "9.2.0",
+    "jhipsterVersion": "9.1.0",
     "jwtSecretKey": "MTYwOTk3YTk2NmUwYjMzOGZhZmY4MzE1YjAxNjk1MzVlYjE1ZTFkNTBiNjc2OWY1NWYyYjJmNjY2OTExYmYxZDdjMzUxOGVhNzczYmRiZmEzZGZkYzRhZjNjZTUyMDQyMzFkZTBjZmNmOGRhZjc3NDk3MmIwMGFhZDdlNWU1ZmI=",
     "languages": ["en"],
     "lastLiquibaseTimestamp": 1703314113000,
+    "monorepository": true,
     "nativeLanguage": "en",
     "packageName": "com.ecommerce.payment",
     "prodDatabaseType": "postgresql",
     "serverPort": "8090",
     "serviceDiscoveryType": "consul",
-    "skipClient": true
+    "skipClient": true,
+    "skipCommitHook": true
   }
 }

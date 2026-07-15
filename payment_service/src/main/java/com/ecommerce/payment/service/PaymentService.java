@@ -1,73 +1,37 @@
 package com.ecommerce.payment.service;
 
-import com.ecommerce.payment.domain.Payment;
-import com.ecommerce.payment.repository.PaymentRepository;
+import com.ecommerce.payment.service.dto.PaymentDTO;
 import java.util.Optional;
-import java.util.function.Consumer;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 /**
- * Service Implementation for managing {@link com.ecommerce.payment.domain.Payment}.
+ * Service Interface for managing {@link com.ecommerce.payment.domain.Payment}.
  */
-@Service
-@Transactional
-public class PaymentService {
-
-    private static final Logger LOG = LoggerFactory.getLogger(PaymentService.class);
-
-    private final PaymentRepository paymentRepository;
-
-    public PaymentService(PaymentRepository paymentRepository) {
-        this.paymentRepository = paymentRepository;
-    }
-
+public interface PaymentService {
     /**
      * Save a payment.
      *
-     * @param payment the entity to save.
+     * @param paymentDTO the entity to save.
      * @return the persisted entity.
      */
-    public Payment save(Payment payment) {
-        LOG.debug("Request to save Payment : {}", payment);
-        return paymentRepository.save(payment);
-    }
+    PaymentDTO save(PaymentDTO paymentDTO);
 
     /**
-     * Update a payment.
+     * Updates a payment.
      *
-     * @param payment the entity to save.
+     * @param paymentDTO the entity to update.
      * @return the persisted entity.
      */
-    public Payment update(Payment payment) {
-        LOG.debug("Request to update Payment : {}", payment);
-        return paymentRepository.save(payment);
-    }
+    PaymentDTO update(PaymentDTO paymentDTO);
 
     /**
-     * Partially update a payment.
+     * Partially updates a payment.
      *
-     * @param payment the entity to update partially.
+     * @param paymentDTO the entity to update partially.
      * @return the persisted entity.
      */
-    public Optional<Payment> partialUpdate(Payment payment) {
-        LOG.debug("Request to partially update Payment : {}", payment);
-
-        return paymentRepository
-            .findById(payment.getId())
-            .map(existingPayment -> {
-                updateIfPresent(existingPayment::setTransactionId, payment.getTransactionId());
-                updateIfPresent(existingPayment::setAmount, payment.getAmount());
-                updateIfPresent(existingPayment::setStatus, payment.getStatus());
-
-                return existingPayment;
-            })
-            .map(paymentRepository::save);
-    }
+    Optional<PaymentDTO> partialUpdate(PaymentDTO paymentDTO);
 
     /**
      * Get all the payments.
@@ -75,37 +39,20 @@ public class PaymentService {
      * @param pageable the pagination information.
      * @return the list of entities.
      */
-    @Transactional(readOnly = true)
-    public Page<Payment> findAll(Pageable pageable) {
-        LOG.debug("Request to get all Payments");
-        return paymentRepository.findAll(pageable);
-    }
+    Page<PaymentDTO> findAll(Pageable pageable);
 
     /**
-     * Get one payment by id.
+     * Get the "id" payment.
      *
      * @param id the id of the entity.
      * @return the entity.
      */
-    @Transactional(readOnly = true)
-    public Optional<Payment> findOne(Long id) {
-        LOG.debug("Request to get Payment : {}", id);
-        return paymentRepository.findById(id);
-    }
+    Optional<PaymentDTO> findOne(Long id);
 
     /**
-     * Delete the payment by id.
+     * Delete the "id" payment.
      *
      * @param id the id of the entity.
      */
-    public void delete(Long id) {
-        LOG.debug("Request to delete Payment : {}", id);
-        paymentRepository.deleteById(id);
-    }
-
-    private <T> void updateIfPresent(Consumer<T> setter, T value) {
-        if (value != null) {
-            setter.accept(value);
-        }
-    }
+    void delete(Long id);
 }

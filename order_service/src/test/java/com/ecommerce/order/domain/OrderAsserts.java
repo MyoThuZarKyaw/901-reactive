@@ -55,7 +55,8 @@ public class OrderAsserts {
                     .usingComparator(bigDecimalCompareTo)
                     .isEqualTo(expected.getTotalAmount())
             )
-            .satisfies(a -> assertThat(a.getStatus()).as("check status").isEqualTo(expected.getStatus()));
+            .satisfies(a -> assertThat(a.getStatus()).as("check status").isEqualTo(expected.getStatus()))
+            .satisfies(a -> assertThat(a.getOrderDate()).as("check orderDate").isEqualTo(expected.getOrderDate()));
     }
 
     /**

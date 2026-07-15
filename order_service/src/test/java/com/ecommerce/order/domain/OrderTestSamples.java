@@ -7,7 +7,7 @@ import java.util.concurrent.atomic.AtomicLong;
 public class OrderTestSamples {
 
     private static final Random random = new Random();
-    private static final AtomicLong longCount = new AtomicLong(random.nextInt() + 2L * Integer.MAX_VALUE);
+    private static final AtomicLong longCount = new AtomicLong(random.nextInt() + (2L * Integer.MAX_VALUE));
 
     public static Order getOrderSample1() {
         return new Order().id(1L).orderNumber("orderNumber1").status("status1");

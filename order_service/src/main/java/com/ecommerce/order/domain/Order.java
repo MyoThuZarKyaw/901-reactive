@@ -5,6 +5,7 @@ import jakarta.validation.constraints.*;
 import java.io.Serial;
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.time.Instant;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
@@ -36,6 +37,9 @@ public class Order implements Serializable {
 
     @Column(name = "status")
     private String status;
+
+    @Column(name = "order_date")
+    private Instant orderDate;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
 
@@ -91,6 +95,19 @@ public class Order implements Serializable {
         this.status = status;
     }
 
+    public Instant getOrderDate() {
+        return this.orderDate;
+    }
+
+    public Order orderDate(Instant orderDate) {
+        this.setOrderDate(orderDate);
+        return this;
+    }
+
+    public void setOrderDate(Instant orderDate) {
+        this.orderDate = orderDate;
+    }
+
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here
 
     @Override
@@ -118,6 +135,7 @@ public class Order implements Serializable {
             ", orderNumber='" + getOrderNumber() + "'" +
             ", totalAmount=" + getTotalAmount() +
             ", status='" + getStatus() + "'" +
+            ", orderDate='" + getOrderDate() + "'" +
             "}";
     }
 }

@@ -1,73 +1,37 @@
 package com.ecommerce.order.service;
 
-import com.ecommerce.order.domain.Order;
-import com.ecommerce.order.repository.OrderRepository;
+import com.ecommerce.order.service.dto.OrderDTO;
 import java.util.Optional;
-import java.util.function.Consumer;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 /**
- * Service Implementation for managing {@link com.ecommerce.order.domain.Order}.
+ * Service Interface for managing {@link com.ecommerce.order.domain.Order}.
  */
-@Service
-@Transactional
-public class OrderService {
-
-    private static final Logger LOG = LoggerFactory.getLogger(OrderService.class);
-
-    private final OrderRepository orderRepository;
-
-    public OrderService(OrderRepository orderRepository) {
-        this.orderRepository = orderRepository;
-    }
-
+public interface OrderService {
     /**
      * Save a order.
      *
-     * @param order the entity to save.
+     * @param orderDTO the entity to save.
      * @return the persisted entity.
      */
-    public Order save(Order order) {
-        LOG.debug("Request to save Order : {}", order);
-        return orderRepository.save(order);
-    }
+    OrderDTO save(OrderDTO orderDTO);
 
     /**
-     * Update a order.
+     * Updates a order.
      *
-     * @param order the entity to save.
+     * @param orderDTO the entity to update.
      * @return the persisted entity.
      */
-    public Order update(Order order) {
-        LOG.debug("Request to update Order : {}", order);
-        return orderRepository.save(order);
-    }
+    OrderDTO update(OrderDTO orderDTO);
 
     /**
-     * Partially update a order.
+     * Partially updates a order.
      *
-     * @param order the entity to update partially.
+     * @param orderDTO the entity to update partially.
      * @return the persisted entity.
      */
-    public Optional<Order> partialUpdate(Order order) {
-        LOG.debug("Request to partially update Order : {}", order);
-
-        return orderRepository
-            .findById(order.getId())
-            .map(existingOrder -> {
-                updateIfPresent(existingOrder::setOrderNumber, order.getOrderNumber());
-                updateIfPresent(existingOrder::setTotalAmount, order.getTotalAmount());
-                updateIfPresent(existingOrder::setStatus, order.getStatus());
-
-                return existingOrder;
-            })
-            .map(orderRepository::save);
-    }
+    Optional<OrderDTO> partialUpdate(OrderDTO orderDTO);
 
     /**
      * Get all the orders.
@@ -75,37 +39,20 @@ public class OrderService {
      * @param pageable the pagination information.
      * @return the list of entities.
      */
-    @Transactional(readOnly = true)
-    public Page<Order> findAll(Pageable pageable) {
-        LOG.debug("Request to get all Orders");
-        return orderRepository.findAll(pageable);
-    }
+    Page<OrderDTO> findAll(Pageable pageable);
 
     /**
-     * Get one order by id.
+     * Get the "id" order.
      *
      * @param id the id of the entity.
      * @return the entity.
      */
-    @Transactional(readOnly = true)
-    public Optional<Order> findOne(Long id) {
-        LOG.debug("Request to get Order : {}", id);
-        return orderRepository.findById(id);
-    }
+    Optional<OrderDTO> findOne(Long id);
 
     /**
-     * Delete the order by id.
+     * Delete the "id" order.
      *
      * @param id the id of the entity.
      */
-    public void delete(Long id) {
-        LOG.debug("Request to delete Order : {}", id);
-        orderRepository.deleteById(id);
-    }
-
-    private <T> void updateIfPresent(Consumer<T> setter, T value) {
-        if (value != null) {
-            setter.accept(value);
-        }
-    }
+    void delete(Long id);
 }

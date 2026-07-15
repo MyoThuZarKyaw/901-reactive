@@ -5,6 +5,7 @@ import jakarta.validation.constraints.*;
 import java.io.Serial;
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.time.Instant;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
@@ -12,7 +13,7 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
  * A Payment.
  */
 @Entity
-@Table(name = "payment")
+@Table(name = "jhi_payment")
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 @SuppressWarnings("common-java:DuplicatedBlocks")
 public class Payment implements Serializable {
@@ -31,11 +32,18 @@ public class Payment implements Serializable {
     private String transactionId;
 
     @NotNull
+    @Column(name = "order_number", nullable = false)
+    private String orderNumber;
+
+    @NotNull
     @Column(name = "amount", precision = 21, scale = 2, nullable = false)
     private BigDecimal amount;
 
     @Column(name = "status")
     private String status;
+
+    @Column(name = "payment_date")
+    private Instant paymentDate;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
 
@@ -65,6 +73,19 @@ public class Payment implements Serializable {
         this.transactionId = transactionId;
     }
 
+    public String getOrderNumber() {
+        return this.orderNumber;
+    }
+
+    public Payment orderNumber(String orderNumber) {
+        this.setOrderNumber(orderNumber);
+        return this;
+    }
+
+    public void setOrderNumber(String orderNumber) {
+        this.orderNumber = orderNumber;
+    }
+
     public BigDecimal getAmount() {
         return this.amount;
     }
@@ -89,6 +110,19 @@ public class Payment implements Serializable {
 
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    public Instant getPaymentDate() {
+        return this.paymentDate;
+    }
+
+    public Payment paymentDate(Instant paymentDate) {
+        this.setPaymentDate(paymentDate);
+        return this;
+    }
+
+    public void setPaymentDate(Instant paymentDate) {
+        this.paymentDate = paymentDate;
     }
 
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here
@@ -116,8 +150,10 @@ public class Payment implements Serializable {
         return "Payment{" +
             "id=" + getId() +
             ", transactionId='" + getTransactionId() + "'" +
+            ", orderNumber='" + getOrderNumber() + "'" +
             ", amount=" + getAmount() +
             ", status='" + getStatus() + "'" +
+            ", paymentDate='" + getPaymentDate() + "'" +
             "}";
     }
 }

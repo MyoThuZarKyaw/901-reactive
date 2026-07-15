@@ -10,17 +10,23 @@
         Added the entity Product.
     -->
     <changeSet id="20231227105106-1" author="jhipster">
-        <createTable tableName="product">
+        <createTable tableName="jhi_product">
             <column name="id" type="bigint">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
-            <column name="sku" type="varchar(255)">
+            <column name="product_id" type="varchar(255)">
                 <constraints nullable="false" />
             </column>
             <column name="name" type="varchar(255)">
                 <constraints nullable="false" />
             </column>
+            <column name="description" type="varchar(255)">
+                <constraints nullable="false" />
+            </column>
             <column name="stock_quantity" type="integer">
+                <constraints nullable="false" />
+            </column>
+            <column name="unit_price" type="decimal(21,2)">
                 <constraints nullable="false" />
             </column>
             <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here -->
@@ -39,15 +45,17 @@
     -->
     <changeSet id="20231227105106-1-data" author="jhipster" context="faker">
         <loadData
-                  file="../fake-data/product.csv"
+                  file="../fake-data/products_data.csv"
                   relativeToChangelogFile="true"
                   separator=";"
-                  tableName="product"
+                  tableName="jhi_product"
                   usePreparedStatements="true">
             <column name="id" type="numeric"/>
-            <column name="sku" type="string"/>
+            <column name="product_id" type="string"/>
             <column name="name" type="string"/>
+            <column name="description" type="string"/>
             <column name="stock_quantity" type="numeric"/>
+            <column name="unit_price" type="numeric"/>
             <!-- jhipster-needle-liquibase-add-loadcolumn - JHipster (and/or extensions) can add load columns here -->
         </loadData>
     </changeSet>

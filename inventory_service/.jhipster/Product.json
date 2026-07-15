@@ -1,13 +1,16 @@
 {
   "annotations": {
-    "changelogDate": "20231227105106"
+    "changelogDate": "20231227105106",
+    "dto": "mapstruct",
+    "service": "serviceImpl"
   },
-  "applications": ["inventory_service"],
+  "applications": ["*"],
   "clientRootFolder": "inventory_service",
   "databaseType": "sql",
+  "entityTableName": "jhi_product",
   "fields": [
     {
-      "fieldName": "sku",
+      "fieldName": "productId",
       "fieldType": "String",
       "fieldValidateRules": ["required"]
     },
@@ -17,8 +20,18 @@
       "fieldValidateRules": ["required"]
     },
     {
+      "fieldName": "description",
+      "fieldType": "String",
+      "fieldValidateRules": ["required"]
+    },
+    {
       "fieldName": "stockQuantity",
       "fieldType": "Integer",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "unitPrice",
+      "fieldType": "BigDecimal",
       "fieldValidateRules": ["required"]
     }
   ],

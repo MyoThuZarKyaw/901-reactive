@@ -49,10 +49,12 @@ public class PaymentAsserts {
         assertThat(actual)
             .as("Verify Payment relevant properties")
             .satisfies(a -> assertThat(a.getTransactionId()).as("check transactionId").isEqualTo(expected.getTransactionId()))
+            .satisfies(a -> assertThat(a.getOrderNumber()).as("check orderNumber").isEqualTo(expected.getOrderNumber()))
             .satisfies(a ->
                 assertThat(a.getAmount()).as("check amount").usingComparator(bigDecimalCompareTo).isEqualTo(expected.getAmount())
             )
-            .satisfies(a -> assertThat(a.getStatus()).as("check status").isEqualTo(expected.getStatus()));
+            .satisfies(a -> assertThat(a.getStatus()).as("check status").isEqualTo(expected.getStatus()))
+            .satisfies(a -> assertThat(a.getPaymentDate()).as("check paymentDate").isEqualTo(expected.getPaymentDate()));
     }
 
     /**

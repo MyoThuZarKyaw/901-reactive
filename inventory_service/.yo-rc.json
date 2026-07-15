@@ -6,16 +6,19 @@
     "baseName": "inventory_service",
     "buildTool": "maven",
     "creationTimestamp": 1703674206629,
+    "defaultCommand": "app",
     "entities": ["Product"],
-    "jhipsterVersion": "9.2.0",
+    "jhipsterVersion": "9.1.0",
     "jwtSecretKey": "YTI4MDE3MTY2MDI1MTlhMjMzMGNiZGMwOTA3M2YwYjdkMGJhOTczNGU3ZjllMWM3NmE1MDQzN2E5OGZhMmNmN2U4MGEyNDUyNThjNmU5NmE3NzZkZTVmZWM3NmM4NDc1YmFiMTA3NmRlMzI0ZjM0YTM4M2M3Yzk1ZDA2ZGRjZTE=",
     "languages": ["en"],
     "lastLiquibaseTimestamp": 1703674266000,
+    "monorepository": true,
     "nativeLanguage": "en",
     "packageName": "com.ecommerce.inventory",
     "prodDatabaseType": "postgresql",
     "serverPort": "8095",
     "serviceDiscoveryType": "consul",
-    "skipClient": true
+    "skipClient": true,
+    "skipCommitHook": true
   }
 }

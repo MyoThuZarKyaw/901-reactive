@@ -1,8 +1,8 @@
 package com.ecommerce.payment.web.rest;
 
-import com.ecommerce.payment.domain.Payment;
 import com.ecommerce.payment.repository.PaymentRepository;
 import com.ecommerce.payment.service.PaymentService;
+import com.ecommerce.payment.service.dto.PaymentDTO;
 import com.ecommerce.payment.web.rest.errors.BadRequestAlertException;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
@@ -50,42 +50,42 @@ public class PaymentResource {
     /**
      * {@code POST  /payments} : Create a new payment.
      *
-     * @param payment the payment to create.
-     * @return the {@link ResponseEntity} with status {@code 201 (Created)} and with body the new payment, or with status {@code 400 (Bad Request)} if the payment has already an ID.
+     * @param paymentDTO the paymentDTO to create.
+     * @return the {@link ResponseEntity} with status {@code 201 (Created)} and with body the new paymentDTO, or with status {@code 400 (Bad Request)} if the payment has already an ID.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PostMapping("")
-    public ResponseEntity<Payment> createPayment(@Valid @RequestBody Payment payment) throws URISyntaxException {
-        LOG.debug("REST request to save Payment : {}", payment);
-        if (payment.getId() != null) {
+    public ResponseEntity<PaymentDTO> createPayment(@Valid @RequestBody PaymentDTO paymentDTO) throws URISyntaxException {
+        LOG.debug("REST request to save Payment : {}", paymentDTO);
+        if (paymentDTO.getId() != null) {
             throw new BadRequestAlertException("A new payment cannot already have an ID", ENTITY_NAME, "idexists");
         }
-        payment = paymentService.save(payment);
-        return ResponseEntity.created(new URI("/api/payments/" + payment.getId()))
-            .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, payment.getId().toString()))
-            .body(payment);
+        paymentDTO = paymentService.save(paymentDTO);
+        return ResponseEntity.created(new URI("/api/payments/" + paymentDTO.getId()))
+            .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, paymentDTO.getId().toString()))
+            .body(paymentDTO);
     }
 
     /**
      * {@code PUT  /payments/:id} : Updates an existing payment.
      *
-     * @param id the id of the payment to save.
-     * @param payment the payment to update.
-     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated payment,
-     * or with status {@code 400 (Bad Request)} if the payment is not valid,
-     * or with status {@code 500 (Internal Server Error)} if the payment couldn't be updated.
+     * @param id the id of the paymentDTO to save.
+     * @param paymentDTO the paymentDTO to update.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated paymentDTO,
+     * or with status {@code 400 (Bad Request)} if the paymentDTO is not valid,
+     * or with status {@code 500 (Internal Server Error)} if the paymentDTO couldn't be updated.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PutMapping("/{id}")
-    public ResponseEntity<Payment> updatePayment(
+    public ResponseEntity<PaymentDTO> updatePayment(
         @PathVariable(value = "id", required = false) final Long id,
-        @Valid @RequestBody Payment payment
+        @Valid @RequestBody PaymentDTO paymentDTO
     ) throws URISyntaxException {
-        LOG.debug("REST request to update Payment : {}, {}", id, payment);
-        if (payment.getId() == null) {
+        LOG.debug("REST request to update Payment : {}, {}", id, paymentDTO);
+        if (paymentDTO.getId() == null) {
             throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
         }
-        if (!Objects.equals(id, payment.getId())) {
+        if (!Objects.equals(id, paymentDTO.getId())) {
             throw new BadRequestAlertException("Invalid ID", ENTITY_NAME, "idinvalid");
         }
 
@@ -93,33 +93,33 @@ public class PaymentResource {
             throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
         }
 
-        payment = paymentService.update(payment);
+        paymentDTO = paymentService.update(paymentDTO);
         return ResponseEntity.ok()
-            .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, payment.getId().toString()))
-            .body(payment);
+            .headers(HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, paymentDTO.getId().toString()))
+            .body(paymentDTO);
     }
 
     /**
      * {@code PATCH  /payments/:id} : Partial updates given fields of an existing payment, field will ignore if it is null
      *
-     * @param id the id of the payment to save.
-     * @param payment the payment to update.
-     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated payment,
-     * or with status {@code 400 (Bad Request)} if the payment is not valid,
-     * or with status {@code 404 (Not Found)} if the payment is not found,
-     * or with status {@code 500 (Internal Server Error)} if the payment couldn't be updated.
+     * @param id the id of the paymentDTO to save.
+     * @param paymentDTO the paymentDTO to update.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the updated paymentDTO,
+     * or with status {@code 400 (Bad Request)} if the paymentDTO is not valid,
+     * or with status {@code 404 (Not Found)} if the paymentDTO is not found,
+     * or with status {@code 500 (Internal Server Error)} if the paymentDTO couldn't be updated.
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PatchMapping(value = "/{id}", consumes = { "application/json", "application/merge-patch+json" })
-    public ResponseEntity<Payment> partialUpdatePayment(
+    public ResponseEntity<PaymentDTO> partialUpdatePayment(
         @PathVariable(value = "id", required = false) final Long id,
-        @NotNull @RequestBody Payment payment
+        @NotNull @RequestBody PaymentDTO paymentDTO
     ) throws URISyntaxException {
-        LOG.debug("REST request to partial update Payment partially : {}, {}", id, payment);
-        if (payment.getId() == null) {
+        LOG.debug("REST request to partial update Payment partially : {}, {}", id, paymentDTO);
+        if (paymentDTO.getId() == null) {
             throw new BadRequestAlertException("Invalid id", ENTITY_NAME, "idnull");
         }
-        if (!Objects.equals(id, payment.getId())) {
+        if (!Objects.equals(id, paymentDTO.getId())) {
             throw new BadRequestAlertException("Invalid ID", ENTITY_NAME, "idinvalid");
         }
 
@@ -127,11 +127,11 @@ public class PaymentResource {
             throw new BadRequestAlertException("Entity not found", ENTITY_NAME, "idnotfound");
         }
 
-        Optional<Payment> result = paymentService.partialUpdate(payment);
+        Optional<PaymentDTO> result = paymentService.partialUpdate(paymentDTO);
 
         return ResponseUtil.wrapOrNotFound(
             result,
-            HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, payment.getId().toString())
+            HeaderUtil.createEntityUpdateAlert(applicationName, true, ENTITY_NAME, paymentDTO.getId().toString())
         );
     }
 
@@ -142,9 +142,9 @@ public class PaymentResource {
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of Payments in body.
      */
     @GetMapping("")
-    public ResponseEntity<List<Payment>> getAllPayments(@org.springdoc.core.annotations.ParameterObject Pageable pageable) {
+    public ResponseEntity<List<PaymentDTO>> getAllPayments(@org.springdoc.core.annotations.ParameterObject Pageable pageable) {
         LOG.debug("REST request to get a page of Payments");
-        Page<Payment> page = paymentService.findAll(pageable);
+        Page<PaymentDTO> page = paymentService.findAll(pageable);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
         return ResponseEntity.ok().headers(headers).body(page.getContent());
     }
@@ -152,20 +152,20 @@ public class PaymentResource {
     /**
      * {@code GET  /payments/:id} : get the "id" payment.
      *
-     * @param id the id of the payment to retrieve.
-     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the payment, or with status {@code 404 (Not Found)}.
+     * @param id the id of the paymentDTO to retrieve.
+     * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the paymentDTO, or with status {@code 404 (Not Found)}.
      */
     @GetMapping("/{id}")
-    public ResponseEntity<Payment> getPayment(@PathVariable("id") Long id) {
+    public ResponseEntity<PaymentDTO> getPayment(@PathVariable("id") Long id) {
         LOG.debug("REST request to get Payment : {}", id);
-        Optional<Payment> payment = paymentService.findOne(id);
-        return ResponseUtil.wrapOrNotFound(payment);
+        Optional<PaymentDTO> paymentDTO = paymentService.findOne(id);
+        return ResponseUtil.wrapOrNotFound(paymentDTO);
     }
 
     /**
      * {@code DELETE  /payments/:id} : delete the "id" payment.
      *
-     * @param id the id of the payment to delete.
+     * @param id the id of the paymentDTO to delete.
      * @return the {@link ResponseEntity} with status {@code 204 (NO_CONTENT)}.
      */
     @DeleteMapping("/{id}")

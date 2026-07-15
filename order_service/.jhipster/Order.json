@@ -1,8 +1,10 @@
 {
   "annotations": {
-    "changelogDate": "20231210004839"
+    "changelogDate": "20231210004839",
+    "dto": "mapstruct",
+    "service": "serviceImpl"
   },
-  "applications": ["order_service"],
+  "applications": ["*"],
   "clientRootFolder": "order_service",
   "databaseType": "sql",
   "entityTableName": "jhi_order",
@@ -20,6 +22,10 @@
     {
       "fieldName": "status",
       "fieldType": "String"
+    },
+    {
+      "fieldName": "orderDate",
+      "fieldType": "Instant"
     }
   ],
   "microserviceName": "order_service",

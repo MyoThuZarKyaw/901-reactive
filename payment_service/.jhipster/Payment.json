@@ -1,13 +1,21 @@
 {
   "annotations": {
-    "changelogDate": "20231223064833"
+    "changelogDate": "20231223064833",
+    "dto": "mapstruct",
+    "service": "serviceImpl"
   },
-  "applications": ["payment_service"],
+  "applications": ["*"],
   "clientRootFolder": "payment_service",
   "databaseType": "sql",
+  "entityTableName": "jhi_payment",
   "fields": [
     {
       "fieldName": "transactionId",
+      "fieldType": "String",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "orderNumber",
       "fieldType": "String",
       "fieldValidateRules": ["required"]
     },
@@ -19,6 +27,10 @@
     {
       "fieldName": "status",
       "fieldType": "String"
+    },
+    {
+      "fieldName": "paymentDate",
+      "fieldType": "Instant"
     }
   ],
   "microserviceName": "payment_service",

@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import java.io.Serial;
 import java.io.Serializable;
+import java.math.BigDecimal;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
@@ -11,7 +12,7 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
  * A Product.
  */
 @Entity
-@Table(name = "product")
+@Table(name = "jhi_product")
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 @SuppressWarnings("common-java:DuplicatedBlocks")
 public class Product implements Serializable {
@@ -26,16 +27,24 @@ public class Product implements Serializable {
     private Long id;
 
     @NotNull
-    @Column(name = "sku", nullable = false)
-    private String sku;
+    @Column(name = "product_id", nullable = false)
+    private String productId;
 
     @NotNull
     @Column(name = "name", nullable = false)
     private String name;
 
     @NotNull
+    @Column(name = "description", nullable = false)
+    private String description;
+
+    @NotNull
     @Column(name = "stock_quantity", nullable = false)
     private Integer stockQuantity;
+
+    @NotNull
+    @Column(name = "unit_price", precision = 21, scale = 2, nullable = false)
+    private BigDecimal unitPrice;
 
     // jhipster-needle-entity-add-field - JHipster will add fields here
 
@@ -52,17 +61,17 @@ public class Product implements Serializable {
         this.id = id;
     }
 
-    public String getSku() {
-        return this.sku;
+    public String getProductId() {
+        return this.productId;
     }
 
-    public Product sku(String sku) {
-        this.setSku(sku);
+    public Product productId(String productId) {
+        this.setProductId(productId);
         return this;
     }
 
-    public void setSku(String sku) {
-        this.sku = sku;
+    public void setProductId(String productId) {
+        this.productId = productId;
     }
 
     public String getName() {
@@ -78,6 +87,19 @@ public class Product implements Serializable {
         this.name = name;
     }
 
+    public String getDescription() {
+        return this.description;
+    }
+
+    public Product description(String description) {
+        this.setDescription(description);
+        return this;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
     public Integer getStockQuantity() {
         return this.stockQuantity;
     }
@@ -89,6 +111,19 @@ public class Product implements Serializable {
 
     public void setStockQuantity(Integer stockQuantity) {
         this.stockQuantity = stockQuantity;
+    }
+
+    public BigDecimal getUnitPrice() {
+        return this.unitPrice;
+    }
+
+    public Product unitPrice(BigDecimal unitPrice) {
+        this.setUnitPrice(unitPrice);
+        return this;
+    }
+
+    public void setUnitPrice(BigDecimal unitPrice) {
+        this.unitPrice = unitPrice;
     }
 
     // jhipster-needle-entity-add-getters-setters - JHipster will add getters and setters here
@@ -115,9 +150,11 @@ public class Product implements Serializable {
     public String toString() {
         return "Product{" +
             "id=" + getId() +
-            ", sku='" + getSku() + "'" +
+            ", productId='" + getProductId() + "'" +
             ", name='" + getName() + "'" +
+            ", description='" + getDescription() + "'" +
             ", stockQuantity=" + getStockQuantity() +
+            ", unitPrice=" + getUnitPrice() +
             "}";
     }
 }

@@ -1,5 +1,6 @@
 package com.ecommerce.inventory.domain;
 
+import static com.ecommerce.inventory.domain.AssertUtils.bigDecimalCompareTo;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class ProductAsserts {
@@ -47,9 +48,13 @@ public class ProductAsserts {
     public static void assertProductUpdatableFieldsEquals(Product expected, Product actual) {
         assertThat(actual)
             .as("Verify Product relevant properties")
-            .satisfies(a -> assertThat(a.getSku()).as("check sku").isEqualTo(expected.getSku()))
+            .satisfies(a -> assertThat(a.getProductId()).as("check productId").isEqualTo(expected.getProductId()))
             .satisfies(a -> assertThat(a.getName()).as("check name").isEqualTo(expected.getName()))
-            .satisfies(a -> assertThat(a.getStockQuantity()).as("check stockQuantity").isEqualTo(expected.getStockQuantity()));
+            .satisfies(a -> assertThat(a.getDescription()).as("check description").isEqualTo(expected.getDescription()))
+            .satisfies(a -> assertThat(a.getStockQuantity()).as("check stockQuantity").isEqualTo(expected.getStockQuantity()))
+            .satisfies(a ->
+                assertThat(a.getUnitPrice()).as("check unitPrice").usingComparator(bigDecimalCompareTo).isEqualTo(expected.getUnitPrice())
+            );
     }
 
     /**

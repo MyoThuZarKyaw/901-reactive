@@ -1,0 +1,48 @@
+{
+  "annotations": {
+    "changelogDate": "20260715121212",
+    "dto": "mapstruct",
+    "service": "serviceImpl"
+  },
+  "applications": ["*"],
+  "clientRootFolder": "order_service",
+  "databaseType": "sql",
+  "entityTableName": "jhi_order_item",
+  "fields": [
+    {
+      "fieldName": "orderItemId",
+      "fieldType": "String",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "orderNumber",
+      "fieldType": "String",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "productId",
+      "fieldType": "String",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "quantity",
+      "fieldType": "BigDecimal",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "price",
+      "fieldType": "BigDecimal",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "total",
+      "fieldType": "BigDecimal",
+      "fieldValidateRules": ["required"]
+    }
+  ],
+  "microserviceName": "order_service",
+  "name": "OrderItem",
+  "pagination": "pagination",
+  "relationships": [],
+  "searchEngine": "no"
+}

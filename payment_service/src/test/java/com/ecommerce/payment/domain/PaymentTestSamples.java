@@ -7,20 +7,21 @@ import java.util.concurrent.atomic.AtomicLong;
 public class PaymentTestSamples {
 
     private static final Random random = new Random();
-    private static final AtomicLong longCount = new AtomicLong(random.nextInt() + 2L * Integer.MAX_VALUE);
+    private static final AtomicLong longCount = new AtomicLong(random.nextInt() + (2L * Integer.MAX_VALUE));
 
     public static Payment getPaymentSample1() {
-        return new Payment().id(1L).transactionId("transactionId1").status("status1");
+        return new Payment().id(1L).transactionId("transactionId1").orderNumber("orderNumber1").status("status1");
     }
 
     public static Payment getPaymentSample2() {
-        return new Payment().id(2L).transactionId("transactionId2").status("status2");
+        return new Payment().id(2L).transactionId("transactionId2").orderNumber("orderNumber2").status("status2");
     }
 
     public static Payment getPaymentRandomSampleGenerator() {
         return new Payment()
             .id(longCount.incrementAndGet())
             .transactionId(UUID.randomUUID().toString())
+            .orderNumber(UUID.randomUUID().toString())
             .status(UUID.randomUUID().toString());
     }
 }

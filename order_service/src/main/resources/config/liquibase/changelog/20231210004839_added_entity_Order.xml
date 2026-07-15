@@ -23,8 +23,12 @@
             <column name="status" type="varchar(255)">
                 <constraints nullable="true" />
             </column>
+            <column name="order_date" type="${datetimeType}">
+                <constraints nullable="true" />
+            </column>
             <!-- jhipster-needle-liquibase-add-column - JHipster will add columns here -->
         </createTable>
+        <dropDefaultValue tableName="jhi_order" columnName="order_date" columnDataType="${datetimeType}"/>
     </changeSet>
 
     <!-- jhipster-needle-liquibase-add-changeset - JHipster will add changesets here -->
@@ -39,7 +43,7 @@
     -->
     <changeSet id="20231210004839-1-data" author="jhipster" context="faker">
         <loadData
-                  file="../fake-data/jhi_order.csv"
+                  file="../fake-data/orders_data.csv"
                   relativeToChangelogFile="true"
                   separator=";"
                   tableName="jhi_order"
@@ -48,6 +52,7 @@
             <column name="order_number" type="string"/>
             <column name="total_amount" type="numeric"/>
             <column name="status" type="string"/>
+            <column name="order_date" type="date"/>
             <!-- jhipster-needle-liquibase-add-loadcolumn - JHipster (and/or extensions) can add load columns here -->
         </loadData>
     </changeSet>

@@ -6,16 +6,19 @@
     "baseName": "order_service",
     "buildTool": "maven",
     "creationTimestamp": 1702169259220,
-    "entities": ["Order"],
-    "jhipsterVersion": "9.2.0",
+    "defaultCommand": "app",
+    "entities": ["Order", "OrderItem"],
+    "jhipsterVersion": "9.1.0",
     "jwtSecretKey": "MTZiYWY0NTI0Zjc1NWVjMDk1ZGY0MzEyMmVlY2E0MzczMGNmNDEyYmYzMjQ0YTYxNjEwZDQ2NWNmYzJmNmY5ZjJkY2JiMjgwZDczMTNkMjc5MTJiODc3YmQ4YjNjN2Y2YzQwNmVjMThiNjgxZjkyZTVlYjZiZWJmOGFhMzNkNzM=",
     "languages": ["en"],
-    "lastLiquibaseTimestamp": 1702169319000,
+    "lastLiquibaseTimestamp": 1784117532000,
+    "monorepository": true,
     "nativeLanguage": "en",
     "packageName": "com.ecommerce.order",
     "prodDatabaseType": "postgresql",
     "serverPort": "8085",
     "serviceDiscoveryType": "consul",
-    "skipClient": true
+    "skipClient": true,
+    "skipCommitHook": true
   }
 }

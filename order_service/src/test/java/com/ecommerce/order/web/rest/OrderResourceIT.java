@@ -11,9 +11,13 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import com.ecommerce.order.IntegrationTest;
 import com.ecommerce.order.domain.Order;
 import com.ecommerce.order.repository.OrderRepository;
+import com.ecommerce.order.service.dto.OrderDTO;
+import com.ecommerce.order.service.mapper.OrderMapper;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.persistence.EntityManager;
 import java.math.BigDecimal;
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
 import java.util.Random;
 import java.util.concurrent.atomic.AtomicLong;
 import org.junit.jupiter.api.AfterEach;
@@ -43,17 +47,23 @@ class OrderResourceIT {
     private static final String DEFAULT_STATUS = "AAAAAAAAAA";
     private static final String UPDATED_STATUS = "BBBBBBBBBB";
 
+    private static final Instant DEFAULT_ORDER_DATE = Instant.ofEpochMilli(0L);
+    private static final Instant UPDATED_ORDER_DATE = Instant.now().truncatedTo(ChronoUnit.MILLIS);
+
     private static final String ENTITY_API_URL = "/api/orders";
     private static final String ENTITY_API_URL_ID = ENTITY_API_URL + "/{id}";
 
     private static final Random random = new Random();
-    private static final AtomicLong longCount = new AtomicLong(random.nextInt() + 2L * Integer.MAX_VALUE);
+    private static final AtomicLong longCount = new AtomicLong(random.nextInt() + (2L * Integer.MAX_VALUE));
 
     @Autowired
     private ObjectMapper om;
 
     @Autowired
     private OrderRepository orderRepository;
+
+    @Autowired
+    private OrderMapper orderMapper;
 
     @Autowired
     private EntityManager em;
@@ -72,7 +82,11 @@ class OrderResourceIT {
      * if they test an entity which requires the current entity.
      */
     public static Order createEntity() {
-        return new Order().orderNumber(DEFAULT_ORDER_NUMBER).totalAmount(DEFAULT_TOTAL_AMOUNT).status(DEFAULT_STATUS);
+        return new Order()
+            .orderNumber(DEFAULT_ORDER_NUMBER)
+            .totalAmount(DEFAULT_TOTAL_AMOUNT)
+            .status(DEFAULT_STATUS)
+            .orderDate(DEFAULT_ORDER_DATE);
     }
 
     /**
@@ -82,7 +96,11 @@ class OrderResourceIT {
      * if they test an entity which requires the current entity.
      */
     public static Order createUpdatedEntity() {
-        return new Order().orderNumber(UPDATED_ORDER_NUMBER).totalAmount(UPDATED_TOTAL_AMOUNT).status(UPDATED_STATUS);
+        return new Order()
+            .orderNumber(UPDATED_ORDER_NUMBER)
+            .totalAmount(UPDATED_TOTAL_AMOUNT)
+            .status(UPDATED_STATUS)
+            .orderDate(UPDATED_ORDER_DATE);
     }
 
     @BeforeEach
@@ -103,18 +121,20 @@ class OrderResourceIT {
     void createOrder() throws Exception {
         long databaseSizeBeforeCreate = getRepositoryCount();
         // Create the Order
-        var returnedOrder = om.readValue(
+        OrderDTO orderDTO = orderMapper.toDto(order);
+        var returnedOrderDTO = om.readValue(
             restOrderMockMvc
-                .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(om.writeValueAsBytes(order)))
+                .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(om.writeValueAsBytes(orderDTO)))
                 .andExpect(status().isCreated())
                 .andReturn()
                 .getResponse()
                 .getContentAsString(),
-            Order.class
+            OrderDTO.class
         );
 
         // Validate the Order in the database
         assertIncrementedRepositoryCount(databaseSizeBeforeCreate);
+        var returnedOrder = orderMapper.toEntity(returnedOrderDTO);
         assertOrderUpdatableFieldsEquals(returnedOrder, getPersistedOrder(returnedOrder));
 
         insertedOrder = returnedOrder;
@@ -125,12 +145,13 @@ class OrderResourceIT {
     void createOrderWithExistingId() throws Exception {
         // Create the Order with an existing ID
         order.setId(1L);
+        OrderDTO orderDTO = orderMapper.toDto(order);
 
         long databaseSizeBeforeCreate = getRepositoryCount();
 
         // An entity with an existing ID cannot be created, so this API call must fail
         restOrderMockMvc
-            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(om.writeValueAsBytes(order)))
+            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(om.writeValueAsBytes(orderDTO)))
             .andExpect(status().isBadRequest());
 
         // Validate the Order in the database
@@ -145,9 +166,10 @@ class OrderResourceIT {
         order.setOrderNumber(null);
 
         // Create the Order, which fails.
+        OrderDTO orderDTO = orderMapper.toDto(order);
 
         restOrderMockMvc
-            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(om.writeValueAsBytes(order)))
+            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(om.writeValueAsBytes(orderDTO)))
             .andExpect(status().isBadRequest());
 
         assertSameRepositoryCount(databaseSizeBeforeTest);
@@ -161,9 +183,10 @@ class OrderResourceIT {
         order.setTotalAmount(null);
 
         // Create the Order, which fails.
+        OrderDTO orderDTO = orderMapper.toDto(order);
 
         restOrderMockMvc
-            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(om.writeValueAsBytes(order)))
+            .perform(post(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(om.writeValueAsBytes(orderDTO)))
             .andExpect(status().isBadRequest());
 
         assertSameRepositoryCount(databaseSizeBeforeTest);
@@ -183,7 +206,8 @@ class OrderResourceIT {
             .andExpect(jsonPath("$.[*].id").value(hasItem(order.getId().intValue())))
             .andExpect(jsonPath("$.[*].orderNumber").value(hasItem(DEFAULT_ORDER_NUMBER)))
             .andExpect(jsonPath("$.[*].totalAmount").value(hasItem(sameNumber(DEFAULT_TOTAL_AMOUNT))))
-            .andExpect(jsonPath("$.[*].status").value(hasItem(DEFAULT_STATUS)));
+            .andExpect(jsonPath("$.[*].status").value(hasItem(DEFAULT_STATUS)))
+            .andExpect(jsonPath("$.[*].orderDate").value(hasItem(DEFAULT_ORDER_DATE.toString())));
     }
 
     @Test
@@ -200,7 +224,8 @@ class OrderResourceIT {
             .andExpect(jsonPath("$.id").value(order.getId().intValue()))
             .andExpect(jsonPath("$.orderNumber").value(DEFAULT_ORDER_NUMBER))
             .andExpect(jsonPath("$.totalAmount").value(sameNumber(DEFAULT_TOTAL_AMOUNT)))
-            .andExpect(jsonPath("$.status").value(DEFAULT_STATUS));
+            .andExpect(jsonPath("$.status").value(DEFAULT_STATUS))
+            .andExpect(jsonPath("$.orderDate").value(DEFAULT_ORDER_DATE.toString()));
     }
 
     @Test
@@ -222,13 +247,16 @@ class OrderResourceIT {
         Order updatedOrder = orderRepository.findById(order.getId()).orElseThrow();
         // Disconnect from session so that the updates on updatedOrder are not directly saved in db
         em.detach(updatedOrder);
-        updatedOrder.orderNumber(UPDATED_ORDER_NUMBER).totalAmount(UPDATED_TOTAL_AMOUNT).status(UPDATED_STATUS);
+        updatedOrder
+            .orderNumber(UPDATED_ORDER_NUMBER)
+            .totalAmount(UPDATED_TOTAL_AMOUNT)
+            .status(UPDATED_STATUS)
+            .orderDate(UPDATED_ORDER_DATE);
+        OrderDTO orderDTO = orderMapper.toDto(updatedOrder);
 
         restOrderMockMvc
             .perform(
-                put(ENTITY_API_URL_ID, updatedOrder.getId())
-                    .contentType(MediaType.APPLICATION_JSON)
-                    .content(om.writeValueAsBytes(updatedOrder))
+                put(ENTITY_API_URL_ID, orderDTO.getId()).contentType(MediaType.APPLICATION_JSON).content(om.writeValueAsBytes(orderDTO))
             )
             .andExpect(status().isOk());
 
@@ -243,9 +271,14 @@ class OrderResourceIT {
         long databaseSizeBeforeUpdate = getRepositoryCount();
         order.setId(longCount.incrementAndGet());
 
+        // Create the Order
+        OrderDTO orderDTO = orderMapper.toDto(order);
+
         // If the entity doesn't have an ID, it will throw BadRequestAlertException
         restOrderMockMvc
-            .perform(put(ENTITY_API_URL_ID, order.getId()).contentType(MediaType.APPLICATION_JSON).content(om.writeValueAsBytes(order)))
+            .perform(
+                put(ENTITY_API_URL_ID, orderDTO.getId()).contentType(MediaType.APPLICATION_JSON).content(om.writeValueAsBytes(orderDTO))
+            )
             .andExpect(status().isBadRequest());
 
         // Validate the Order in the database
@@ -258,12 +291,15 @@ class OrderResourceIT {
         long databaseSizeBeforeUpdate = getRepositoryCount();
         order.setId(longCount.incrementAndGet());
 
+        // Create the Order
+        OrderDTO orderDTO = orderMapper.toDto(order);
+
         // If url ID doesn't match entity ID, it will throw BadRequestAlertException
         restOrderMockMvc
             .perform(
                 put(ENTITY_API_URL_ID, longCount.incrementAndGet())
                     .contentType(MediaType.APPLICATION_JSON)
-                    .content(om.writeValueAsBytes(order))
+                    .content(om.writeValueAsBytes(orderDTO))
             )
             .andExpect(status().isBadRequest());
 
@@ -277,9 +313,12 @@ class OrderResourceIT {
         long databaseSizeBeforeUpdate = getRepositoryCount();
         order.setId(longCount.incrementAndGet());
 
+        // Create the Order
+        OrderDTO orderDTO = orderMapper.toDto(order);
+
         // If url ID doesn't match entity ID, it will throw BadRequestAlertException
         restOrderMockMvc
-            .perform(put(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(om.writeValueAsBytes(order)))
+            .perform(put(ENTITY_API_URL).contentType(MediaType.APPLICATION_JSON).content(om.writeValueAsBytes(orderDTO)))
             .andExpect(status().isMethodNotAllowed());
 
         // Validate the Order in the database
@@ -326,7 +365,11 @@ class OrderResourceIT {
         Order partialUpdatedOrder = new Order();
         partialUpdatedOrder.setId(order.getId());
 
-        partialUpdatedOrder.orderNumber(UPDATED_ORDER_NUMBER).totalAmount(UPDATED_TOTAL_AMOUNT).status(UPDATED_STATUS);
+        partialUpdatedOrder
+            .orderNumber(UPDATED_ORDER_NUMBER)
+            .totalAmount(UPDATED_TOTAL_AMOUNT)
+            .status(UPDATED_STATUS)
+            .orderDate(UPDATED_ORDER_DATE);
 
         restOrderMockMvc
             .perform(
@@ -348,10 +391,15 @@ class OrderResourceIT {
         long databaseSizeBeforeUpdate = getRepositoryCount();
         order.setId(longCount.incrementAndGet());
 
+        // Create the Order
+        OrderDTO orderDTO = orderMapper.toDto(order);
+
         // If the entity doesn't have an ID, it will throw BadRequestAlertException
         restOrderMockMvc
             .perform(
-                patch(ENTITY_API_URL_ID, order.getId()).contentType("application/merge-patch+json").content(om.writeValueAsBytes(order))
+                patch(ENTITY_API_URL_ID, orderDTO.getId())
+                    .contentType("application/merge-patch+json")
+                    .content(om.writeValueAsBytes(orderDTO))
             )
             .andExpect(status().isBadRequest());
 
@@ -365,12 +413,15 @@ class OrderResourceIT {
         long databaseSizeBeforeUpdate = getRepositoryCount();
         order.setId(longCount.incrementAndGet());
 
+        // Create the Order
+        OrderDTO orderDTO = orderMapper.toDto(order);
+
         // If url ID doesn't match entity ID, it will throw BadRequestAlertException
         restOrderMockMvc
             .perform(
                 patch(ENTITY_API_URL_ID, longCount.incrementAndGet())
                     .contentType("application/merge-patch+json")
-                    .content(om.writeValueAsBytes(order))
+                    .content(om.writeValueAsBytes(orderDTO))
             )
             .andExpect(status().isBadRequest());
 
@@ -384,9 +435,12 @@ class OrderResourceIT {
         long databaseSizeBeforeUpdate = getRepositoryCount();
         order.setId(longCount.incrementAndGet());
 
+        // Create the Order
+        OrderDTO orderDTO = orderMapper.toDto(order);
+
         // If url ID doesn't match entity ID, it will throw BadRequestAlertException
         restOrderMockMvc
-            .perform(patch(ENTITY_API_URL).contentType("application/merge-patch+json").content(om.writeValueAsBytes(order)))
+            .perform(patch(ENTITY_API_URL).contentType("application/merge-patch+json").content(om.writeValueAsBytes(orderDTO)))
             .andExpect(status().isMethodNotAllowed());
 
         // Validate the Order in the database
