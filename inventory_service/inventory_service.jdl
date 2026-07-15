@@ -1,0 +1,11 @@
+@dto(mapstruct)
+@service(serviceImpl)
+entity Product(jhi_product) {
+  productId String required,
+  name String required,
+  description String required,
+  stockQuantity Integer required,
+  unitPrice BigDecimal required,
+}
+
+paginate * with pagination

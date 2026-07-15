@@ -1,0 +1,21 @@
+@dto(mapstruct)
+@service(serviceImpl)
+entity Order(jhi_order) {
+  orderNumber String required,
+  totalAmount BigDecimal required,
+  status String,
+  orderDate Instant
+}
+
+@dto(mapstruct)
+@service(serviceImpl)
+entity OrderItem(jhi_order_item) {
+  orderItemId String required,
+  orderNumber String required,
+  productId String required,
+  quantity BigDecimal required,
+  price BigDecimal required,
+  total BigDecimal required,
+}
+
+paginate * with pagination

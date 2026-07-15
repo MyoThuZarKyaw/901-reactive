@@ -1,0 +1,11 @@
+@dto(mapstruct)
+@service(serviceImpl)
+entity Payment(jhi_payment) {
+  transactionId String required,
+  orderNumber String required,
+  amount BigDecimal required,
+  status String,
+  paymentDate Instant
+}
+
+paginate * with pagination

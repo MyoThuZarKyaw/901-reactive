@@ -1,0 +1,31 @@
+id;product_id;name;description;stock_quantity;unit_price
+1;PROD-001;Gaming Laptop;High-performance laptop with RTX 4060 and 16GB RAM;45;1299.99
+2;PROD-002;Wireless Mouse;Ergonomic 2.4GHz wireless optical mouse;150;25.50
+3;PROD-003;Mechanical Keyboard;RGB Backlit mechanical keyboard with Blue Switches;80;79.99
+4;PROD-004;27-inch Monitor;4K UHD IPS display with HDR support;30;349.00
+5;PROD-005;Noise Cancelling Headphones;Over-ear wireless headphones with ANC;60;199.99
+6;PROD-006;USB-C Hub;7-in-1 adapter with HDMI and Power Delivery;120;45.00
+7;PROD-007;Smartphone S23;Latest generation android smartphone 256GB;25;899.00
+8;PROD-008;Tablet Air;10.9-inch tablet with stylus support;40;599.00
+9;PROD-009;Smart Watch;Water-resistant fitness tracker with heart rate monitor;100;149.50
+10;PROD-010;External SSD 1TB;NVMe portable solid state drive USB 3.2;70;110.00
+11;PROD-011;Webcam 1080p;Full HD webcam with built-in noise reducing mic;55;65.00
+12;PROD-012;Standing Desk;Motorized height adjustable desk 140x70cm;15;450.00
+13;PROD-013;Office Chair;Ergonomic mesh chair with lumbar support;20;210.00
+14;PROD-014;Desk Lamp;LED lamp with adjustable brightness and color temp;90;35.00
+15;PROD-015;Bluetooth Speaker;Portable waterproof speaker with 20h battery;110;59.99
+16;PROD-016;Laptop Stand;Aluminum foldable stand for laptops up to 15 inch;200;29.00
+17;PROD-017;HDMI Cable 2.1;High speed 8K HDMI cable 2 meters;300;15.99
+18;PROD-018;Power Bank 20000mAh;Fast charging portable battery with PD;85;49.00
+19;PROD-019;External HDD 4TB;Desktop external hard drive for backup;40;95.00
+20;PROD-020;Wireless Earbuds;TWS earbuds with touch control and charging case;130;79.00
+21;PROD-021;Electric Kettle;1.7L stainless steel fast boil kettle;65;39.99
+22;PROD-022;Air Fryer;Digital air fryer 5.5L with 8 presets;30;120.00
+23;PROD-023;Coffee Maker;Programmable drip coffee maker with timer;45;89.00
+24;PROD-024;Smart Light Bulb;WiFi enabled RGB color changing bulb;250;19.99
+25;PROD-025;USB Flash Drive 64GB;High speed USB 3.0 flash drive;500;12.50
+26;PROD-026;Printer Inkjet;All-in-one wireless color printer;20;150.00
+27;PROD-027;CPU Cooler;Liquid AIO cooler 240mm for Intel and AMD;35;110.00
+28;PROD-028;RAM 16GB Kit;DDR4 3200MHz CL16 dual channel kit;60;65.00
+29;PROD-029;PC Case;Mid-tower ATX case with tempered glass;25;85.00
+30;PROD-030;Power Supply 750W;80 Plus Gold fully modular PSU;40;125.00
