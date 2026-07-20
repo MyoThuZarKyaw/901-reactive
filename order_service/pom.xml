@@ -105,6 +105,10 @@
             <artifactId>spring-boot-starter-actuator</artifactId>
         </dependency>
         <dependency>
+          <groupId>org.springframework.boot</groupId>
+          <artifactId>spring-boot-starter-opentelemetry</artifactId>
+        </dependency>
+        <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-aspectj</artifactId>
         </dependency>
@@ -246,10 +250,10 @@
             <groupId>com.zaxxer</groupId>
             <artifactId>HikariCP</artifactId>
         </dependency>
-        <dependency>
-            <groupId>io.micrometer</groupId>
-            <artifactId>micrometer-registry-prometheus</artifactId>
-        </dependency>
+<!--        <dependency>-->
+<!--            <groupId>io.micrometer</groupId>-->
+<!--            <artifactId>micrometer-registry-prometheus</artifactId>-->
+<!--        </dependency>-->
         <dependency>
             <groupId>javax.cache</groupId>
             <artifactId>cache-api</artifactId>
@@ -995,25 +999,25 @@
                 </plugins>
             </build>
         </profile>
-        <profile>
-            <!--
-                Profile for tracing requests with Zipkin.
-            -->
-            <id>zipkin</id>
-            <dependencies>
-                <dependency>
-                    <groupId>io.micrometer</groupId>
-                    <artifactId>micrometer-tracing</artifactId>
-                </dependency>
-                <dependency>
-                    <groupId>io.micrometer</groupId>
-                    <artifactId>micrometer-tracing-bridge-brave</artifactId>
-                </dependency>
-                <dependency>
-                    <groupId>io.zipkin.reporter2</groupId>
-                    <artifactId>zipkin-reporter-brave</artifactId>
-                </dependency>
-            </dependencies>
-        </profile>
+<!--        <profile>-->
+<!--            &lt;!&ndash;-->
+<!--                Profile for tracing requests with Zipkin.-->
+<!--            &ndash;&gt;-->
+<!--            <id>zipkin</id>-->
+<!--            <dependencies>-->
+<!--                <dependency>-->
+<!--                    <groupId>io.micrometer</groupId>-->
+<!--                    <artifactId>micrometer-tracing</artifactId>-->
+<!--                </dependency>-->
+<!--                <dependency>-->
+<!--                    <groupId>io.micrometer</groupId>-->
+<!--                    <artifactId>micrometer-tracing-bridge-brave</artifactId>-->
+<!--                </dependency>-->
+<!--                <dependency>-->
+<!--                    <groupId>io.zipkin.reporter2</groupId>-->
+<!--                    <artifactId>zipkin-reporter-brave</artifactId>-->
+<!--                </dependency>-->
+<!--            </dependencies>-->
+<!--        </profile>-->
     </profiles>
 </project>
