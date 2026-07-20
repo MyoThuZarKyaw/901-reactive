@@ -1,0 +1,13 @@
+name: gateway_service
+services:
+  otel-collector:
+    image: otel/opentelemetry-collector
+    user: "0" # Grant the container permission to write to Mac folder; Use the ID "0" instead of the name "root"
+    volumes:
+      - ./central-server-config/otel-config.yaml:/etc/otelcol/config.yaml
+      - ./otel-collector-files:/otel-collector-files
+    ports:
+      - 8888:8888 # Prometheus metrics exposed by the Collector
+      - 8889:8889 # Prometheus exporter metrics
+      - 4317:4317 # OTLP gRPC receiver
+      - 4318:4318 # OTLP http receiver such as jaeger

@@ -1,0 +1,45 @@
+receivers:
+  otlp:
+    protocols:
+      grpc:
+        endpoint: 0.0.0.0:4317
+      http:
+        endpoint: 0.0.0.0:4318
+
+processors:
+  batch: # Always use batch processor for performance
+
+exporters:
+  # Local Debugging and Monitoring
+  debug:
+    verbosity: detailed
+
+  file/rotation_with_default_settings:
+    path: /otel-collector-files/otel-data.log
+    rotation:
+
+  # --- TRACES BACKEND (Jaeger via OTLP/HTTP) ---
+  otlp_http/jaeger:
+    endpoint: "http://jaeger:4318" # OTel will auto-append /v1/traces to this base URL
+
+  # --- METRICS BACKEND (Prometheus Pull Model) ---
+  prometheus:
+    endpoint: "0.0.0.0:8889" # The Collector hosts metrics here; Prometheus must scrape this target
+    namespace: "otel"        # Optional: keeps OTel metrics clean by prefixing them
+
+service:
+  pipelines:
+    traces:
+      receivers: [otlp]
+      processors: [batch]
+      exporters: [debug, otlp_http/jaeger, file/rotation_with_default_settings]
+
+    metrics:
+      receivers: [otlp]
+      processors: [batch]
+      exporters: [debug, prometheus, file/rotation_with_default_settings]
+
+#    logs:
+#      receivers: [otlp]
+#      processors: [batch]
+#      exporters: [debug]

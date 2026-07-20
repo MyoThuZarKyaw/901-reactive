@@ -13,3 +13,7 @@ services:
     extends:
       file: ./consul.yml
       service: consul-config-loader
+  otel:
+    extends:
+      file: ./otel.yml
+      service: otel-collector
