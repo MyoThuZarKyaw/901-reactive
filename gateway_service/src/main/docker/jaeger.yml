@@ -1,0 +1,10 @@
+# This configuration is intended for development purpose, it's **your** responsibility to harden it for production
+name: gateway_service
+services:
+  jaeger:
+    image: jaegertracing/all-in-one:latest
+    container_name: jaeger
+    ports:
+      - "16686:16686" # Jaeger UI and Query API for ML Service
+    # Port 4317/4318 are still open INTERNALLY for OTel Collector,
+    # but not mapped to my laptop to avoid conflicts.

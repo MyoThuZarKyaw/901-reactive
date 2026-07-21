@@ -13,7 +13,15 @@ services:
     extends:
       file: ./consul.yml
       service: consul-config-loader
-  otel:
+  otel-collector:
     extends:
       file: ./otel.yml
       service: otel-collector
+  jaeger:
+    extends:
+      file: ./jaeger.yml
+      service: jaeger
+  prometheus:
+    extends:
+      file: ./prometheus.yml
+      service: prometheus

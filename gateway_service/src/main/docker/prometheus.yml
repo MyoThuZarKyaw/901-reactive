@@ -1,0 +1,10 @@
+# This configuration is intended for development purpose, it's **your** responsibility to harden it for production
+name: gateway_service
+services:
+  prometheus:
+    image: prom/prometheus
+    container_name: prometheus
+    volumes:
+      - ./central-server-config/prometheus-config.yml:/etc/prometheus/prometheus.yml
+    ports:
+      - "9090:9090" # UI and API for ML Service

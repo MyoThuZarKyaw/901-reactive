@@ -20,6 +20,7 @@ exporters:
 
   # --- TRACES BACKEND (Jaeger via OTLP/HTTP) ---
   otlp_http/jaeger:
+    # https://www.jaegertracing.io/docs/2.dev/architecture/apis/
     endpoint: "http://jaeger:4318" # OTel will auto-append /v1/traces to this base URL
 
   # --- METRICS BACKEND (Prometheus Pull Model) ---
