@@ -21,12 +21,22 @@ logging:
     com.ecommerce.inventory: DEBUG
 
 management:
-  zipkin: # Use the "zipkin" Maven profile to have the Spring Cloud Zipkin dependencies
-    tracing:
-      endpoint: http://localhost:9411/api/v2/spans
+#  zipkin: # Use the "zipkin" Maven profile to have the Spring Cloud Zipkin dependencies
+#    tracing:
+#      endpoint: http://localhost:9411/api/v2/spans
   tracing:
     sampling:
       probability: 1.0 # report 100% of traces
+
+  otlp:
+    metrics:
+      export:
+        url: http://localhost:4318/v1/metrics
+  opentelemetry:
+    tracing:
+      export:
+        otlp:
+          endpoint: http://localhost:4318/v1/traces
 
 spring:
   devtools:
