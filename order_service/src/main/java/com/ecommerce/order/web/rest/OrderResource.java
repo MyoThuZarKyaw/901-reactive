@@ -1,16 +1,13 @@
 package com.ecommerce.order.web.rest;
 
 import com.ecommerce.order.repository.OrderRepository;
-import com.ecommerce.order.service.OrderService;
+import com.ecommerce.order.service.CustomOrderService;
 import com.ecommerce.order.service.dto.OrderDTO;
+import com.ecommerce.order.web.rest.data.OrderRequest;
+import com.ecommerce.order.web.rest.data.OrderResponse;
 import com.ecommerce.order.web.rest.errors.BadRequestAlertException;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -23,6 +20,11 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import tech.jhipster.web.util.HeaderUtil;
 import tech.jhipster.web.util.PaginationUtil;
 import tech.jhipster.web.util.ResponseUtil;
+
+import java.net.URISyntaxException;
+import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
 
 /**
  * REST controller for managing {@link com.ecommerce.order.domain.Order}.
@@ -38,32 +40,23 @@ public class OrderResource {
     @Value("${jhipster.clientApp.name:orderservice}")
     private String applicationName;
 
-    private final OrderService orderService;
+    private final CustomOrderService orderService;
 
     private final OrderRepository orderRepository;
 
-    public OrderResource(OrderService orderService, OrderRepository orderRepository) {
+    public OrderResource(CustomOrderService orderService, OrderRepository orderRepository) {
         this.orderService = orderService;
         this.orderRepository = orderRepository;
     }
 
-    /**
-     * {@code POST  /orders} : Create a new order.
-     *
-     * @param orderDTO the orderDTO to create.
-     * @return the {@link ResponseEntity} with status {@code 201 (Created)} and with body the new orderDTO, or with status {@code 400 (Bad Request)} if the order has already an ID.
-     * @throws URISyntaxException if the Location URI syntax is incorrect.
-     */
     @PostMapping("")
-    public ResponseEntity<OrderDTO> createOrder(@Valid @RequestBody OrderDTO orderDTO) throws URISyntaxException {
-        LOG.debug("REST request to save Order : {}", orderDTO);
-        if (orderDTO.getId() != null) {
-            throw new BadRequestAlertException("A new order cannot already have an ID", ENTITY_NAME, "idexists");
+    public ResponseEntity<OrderResponse> createOrder(@RequestBody OrderRequest request) throws URISyntaxException {
+        LOG.debug("REST request to save Order : {}", request);
+        if (request.getOrderItems() == null || request.getOrderItems().isEmpty()) {
+            throw new BadRequestAlertException("Order Items cannot be null.", ENTITY_NAME, "missingOrder");
         }
-        orderDTO = orderService.save(orderDTO);
-        return ResponseEntity.created(new URI("/api/orders/" + orderDTO.getId()))
-            .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, orderDTO.getId().toString()))
-            .body(orderDTO);
+        var response = orderService.createOrder(request);
+        return ResponseEntity.ok().body(response);
     }
 
     /**
