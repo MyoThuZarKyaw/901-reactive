@@ -45,8 +45,9 @@ public class PaymentClient {
             .body(PaymentDTO.class);
     }
 
+    // Fallback method: called when circuit is OPEN or call fails
     public PaymentDTO createPaymentFallback(PaymentDTO paymentDTO, Exception e) {
-        log.error("Payment Service failed. giError: {}", e.getMessage());
+        log.error("Payment Service failed. Error: {}", e.getMessage());
         throw new OrderServiceException("Payment Service is currently unavailable. Please try again later.");
     }
 
