@@ -1,6 +1,8 @@
 package com.ecommerce.order;
 
 import com.ecommerce.order.service.dto.ProductDTO;
+import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
+import io.github.resilience4j.retry.annotation.Retry;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cloud.client.ServiceInstance;
 import org.springframework.cloud.client.discovery.DiscoveryClient;
@@ -24,7 +26,7 @@ public class InventoryClient {
     }
 
     private String getProductsResourceUrl() {
-//        return "http://inventory-service/api/products";
+        // return "http://inventory-service/api/products";
         List<ServiceInstance> instances = discoveryClient.getInstances("inventory-service");
         if (instances.isEmpty()) {
             throw new OrderServiceException("inventory-service is currently unavailable");
@@ -32,31 +34,29 @@ public class InventoryClient {
         return instances.get(0).getUri() + "/api/products";
     }
 
-    /**
-     * GET: Fetches all products synchronously
-     */
     public List<ProductDTO> getProducts() {
-        try {
-            return restClient.get()
-                .uri(getProductsResourceUrl())
-                .retrieve()
-                .body(new ParameterizedTypeReference<List<ProductDTO>>() {}); // Safely maps to List<ProductDTO> without reactive steps
-        } catch (Exception e) {
-            throw new OrderServiceException("Exception while getting products from Inventory Service.", e);
-        }
+        log.info("Calling Inventory Service to fetch products...");
+        return restClient.get()
+            .uri(getProductsResourceUrl())
+            .retrieve()
+            .body(new ParameterizedTypeReference<List<ProductDTO>>() {});
     }
 
-    /**
-     * Checks if a specific product has enough stock
-     */
+    @CircuitBreaker(name = "inventoryService", fallbackMethod = "isProductInStockFallback")
+    @Retry(name = "inventoryService")
     public boolean isProductInStock(String productId, Integer requestedQuantity) {
         List<ProductDTO> products = getProducts();
         if (products == null) return false;
-
         return products.stream()
             .filter(p -> p.getProductId().equalsIgnoreCase(productId))
             .findFirst()
             .map(p -> p.getStockQuantity() >= requestedQuantity)
             .orElse(false);
+    }
+
+    // Fallback method: called when circuit is OPEN or call fails
+    public boolean isProductInStockFallback(String productId, Integer requestedQuantity, Exception e) {
+        log.error("Inventory Service is unavailable. Fallback triggered for product {}. Error: {}", productId, e.getMessage());
+        throw new OrderServiceException("Inventory system is currently unavailable. Please try again later.");
     }
 }

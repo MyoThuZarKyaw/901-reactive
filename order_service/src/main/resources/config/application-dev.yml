@@ -125,3 +125,26 @@ jhipster:
 # ===================================================================
 
 # application:
+resilience4j:
+  circuitbreaker:
+    instances:
+      inventoryService:
+        slidingWindowSize: 10
+        failureRateThreshold: 50
+        waitDurationInOpenState: 10s
+        permittedNumberOfCallsInHalfOpenState: 3
+      paymentService:
+        slidingWindowSize: 10
+        failureRateThreshold: 50
+        waitDurationInOpenState: 20s
+        slowCallRateThreshold: 50
+        slowCallDurationThreshold: 2s
+  retry:
+    instances:
+      inventoryService:
+        maxAttempts: 3
+        waitDuration: 500ms
+      paymentService:
+        maxAttempts: 2
+        waitDuration: 1s
+
