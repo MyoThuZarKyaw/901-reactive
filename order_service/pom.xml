@@ -1018,6 +1018,19 @@
                 </plugins>
             </build>
         </profile>
+        <profile>
+          <id>chaos-monkey</id>
+          <properties>
+            <profile.chaos-monkey>,chaos-monkey</profile.chaos-monkey>
+          </properties>
+          <dependencies>
+            <dependency>
+              <groupId>de.codecentric</groupId>
+              <artifactId>chaos-monkey-spring-boot</artifactId>
+              <version>4.0.0</version>
+            </dependency>
+          </dependencies>
+        </profile>
 <!--        <profile>-->
 <!--            &lt;!&ndash;-->
 <!--                Profile for tracing requests with Zipkin.-->
