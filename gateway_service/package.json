@@ -40,6 +40,8 @@
     "docker:jaeger:up": "docker compose -f src/main/docker/jaeger.yml up --wait",
     "docker:prometheus:down": "docker compose -f src/main/docker/prometheus.yml down -v",
     "docker:prometheus:up": "docker compose -f src/main/docker/prometheus.yml up --wait",
+    "docker:redis:down": "docker compose -f src/main/docker/redis.yml down -v",
+    "docker:redis:up": "docker compose -f src/main/docker/redis.yml up --wait",
     "docker:grafana:down": "docker compose -f src/main/docker/grafana.yml down -v",
     "docker:grafana:up": "docker compose -f src/main/docker/grafana.yml up --wait",
     "java:docker": "./mvnw -ntp verify -DskipTests -Pprod jib:dockerBuild",
