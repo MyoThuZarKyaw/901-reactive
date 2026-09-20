@@ -128,12 +128,12 @@ jhipster:
 resilience4j:
   circuitbreaker:
     instances:
-      inventoryService:
+      inventory-service-getProducts:
         slidingWindowSize: 10
         failureRateThreshold: 50
         waitDurationInOpenState: 10s
         permittedNumberOfCallsInHalfOpenState: 3
-      paymentService:
+      payment-service-createPayment:
         slidingWindowSize: 10
         failureRateThreshold: 50
         waitDurationInOpenState: 20s
@@ -141,10 +141,10 @@ resilience4j:
         slowCallDurationThreshold: 2s
   retry:
     instances:
-      inventoryService:
+      inventory-service-getProducts:
         maxAttempts: 3
         waitDuration: 500ms
-      paymentService:
+      payment-service-createPayment:
         maxAttempts: 2
         waitDuration: 1s
 

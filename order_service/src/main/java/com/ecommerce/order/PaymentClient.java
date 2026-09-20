@@ -34,8 +34,8 @@ public class PaymentClient {
         return instances.get(0).getUri() + "/api/payments";
     }
 
-    @CircuitBreaker(name = "paymentService", fallbackMethod = "createPaymentFallback")
-    @Retry(name = "paymentService")
+    @CircuitBreaker(name = "payment-service-createPayment", fallbackMethod = "createPaymentFallback")
+    @Retry(name = "payment-service-createPayment")
     public PaymentDTO createPayment(PaymentDTO paymentDTO) {
         log.info("Processing payment for order: {}", paymentDTO.getOrderNumber());
         return restClient.post()

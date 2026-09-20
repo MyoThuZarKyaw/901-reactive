@@ -42,8 +42,8 @@ public class InventoryClient {
             .body(new ParameterizedTypeReference<List<ProductDTO>>() {});
     }
 
-    @CircuitBreaker(name = "inventoryService", fallbackMethod = "isProductInStockFallback")
-    @Retry(name = "inventoryService")
+    @CircuitBreaker(name = "inventory-service-getProducts", fallbackMethod = "isProductInStockFallback")
+    @Retry(name = "inventory-service-getProducts")
     public boolean isProductInStock(String productId, Integer requestedQuantity) {
         List<ProductDTO> products = getProducts();
         if (products == null) return false;
