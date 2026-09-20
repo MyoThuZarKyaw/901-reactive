@@ -103,7 +103,7 @@ public class CustomOrderServiceImpl extends OrderServiceImpl implements CustomOr
 
         Optional<OrderDTO> result = this.partialUpdate(statusPatch);
         log.info("Order ID {} status successfully updated to {}", id, status);
-        return result.isPresent() ? result.get() : null;
+        return result.orElse(null);
     }
 
     @Transactional
