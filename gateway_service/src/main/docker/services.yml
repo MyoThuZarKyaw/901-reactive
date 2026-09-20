@@ -25,3 +25,15 @@ services:
     extends:
       file: ./prometheus.yml
       service: prometheus
+  redis:
+    extends:
+      file: ./redis.yml
+      service: redis
+  redis-commander:
+    extends:
+      file: ./redis.yml
+      service: redis-commander
+
+volumes:
+  redis-data:
+    driver: local
