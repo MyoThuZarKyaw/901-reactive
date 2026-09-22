@@ -13,6 +13,7 @@ import org.springframework.data.redis.connection.MessageListener;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 
 @Slf4j
 @Component
@@ -31,8 +32,11 @@ public class CircuitBreakerAlertListener implements MessageListener {
     @Override
     public void onMessage(Message message, byte @Nullable [] pattern) {
         try {
-            CircuitBreakerAlert alert = objectMapper.readValue(message.getBody(), CircuitBreakerAlert.class);
-            if("DEGRADED".equals(alert.getStatus()) && StringUtils.isNotBlank(alert.getTargetService())) {
+            String alertJson = new String(message.getBody(), StandardCharsets.UTF_8);
+            log.info("Received a circuit breaker alert: {}", alertJson);
+            CircuitBreakerAlert alert = objectMapper.readValue(alertJson, CircuitBreakerAlert.class);
+            if(("DEGRADED".equalsIgnoreCase(alert.getStatus()) || "FAILED".equalsIgnoreCase(alert.getStatus()))
+                        && StringUtils.isNotBlank(alert.getTargetService())) {
                 String serviceName = alert.getTargetService(); // e.g., "payment-service"
                 // Find ALL circuit breakers starting with this service name
                 // Service breaker instance names will be in pattern {service-name}-{operation} (e.g., payment-service-createPayment)
