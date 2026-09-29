@@ -15,15 +15,9 @@
 
 logging:
   level:
-<<<<<<< Updated upstream
     ROOT: INFO
     tech.jhipster: DEBUG
     org.hibernate.SQL: INFO
-=======
-    ROOT: ERROR
-    tech.jhipster: ERROR
-    org.hibernate.SQL: ERROR
->>>>>>> Stashed changes
     com.ecommerce.order: DEBUG
 
 management:
@@ -133,27 +127,22 @@ jhipster:
 # application:
 resilience4j:
   circuitbreaker:
+    configs:
+      default:
+        sliding-window-type: COUNT_BASED
+        sliding-window-size: 60
+        minimum-number-of-calls: 20
+        failure-rate-threshold: 50
+        slow-call-rate-threshold: 50
+        slow-call-duration-threshold: 1000ms
+        wait-duration-in-open-state: 10000ms
+        permitted-number-of-calls-in-half-open-state: 10
+        automatic-transition-from-open-to-half-open-enabled: true
     instances:
-      inventory-service-getProducts: # or your specific circuit breaker name
-        sliding-window-type: COUNT_BASED
-        sliding-window-size: 60
-        minimum-number-of-calls: 20
-        failure-rate-threshold: 50
-        slow-call-rate-threshold: 50
-        slow-call-duration-threshold: 1000ms
-        wait-duration-in-open-state: 10000ms
-        permitted-number-of-calls-in-half-open-state: 10
-        automatic-transition-from-open-to-half-open-enabled: true
+      inventory-service-getProducts:
+        base-config: default
       payment-service-createPayment:
-        sliding-window-type: COUNT_BASED
-        sliding-window-size: 60
-        minimum-number-of-calls: 20
-        failure-rate-threshold: 50
-        slow-call-rate-threshold: 50
-        slow-call-duration-threshold: 1000ms
-        wait-duration-in-open-state: 10000ms
-        permitted-number-of-calls-in-half-open-state: 10
-        automatic-transition-from-open-to-half-open-enabled: true
+        base-config: default
 #    retry:
 #      instances:
 #        inventory-service-getProducts:
