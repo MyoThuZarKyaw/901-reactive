@@ -1,8 +1,12 @@
 # Sample global config for monitoring JHipster applications
 global:
-  scrape_interval: 15s # By default, scrape targets every 15 seconds.
-  evaluation_interval: 15s # By default, scrape targets every 15 seconds.
+  #scrape_interval: 1s # By default, scrape targets every 15 seconds.
+  #evaluation_interval: 15s # By default, scrape targets every 15 seconds.
   # scrape_timeout is set to the global default (10s).
+
+  scrape_interval: 2s      # High frequency for ML data collection
+  evaluation_interval: 2s
+  scrape_timeout: 2s       # Critical: If scrape takes >1s, the Mac is overloaded
 
   # Attach these labels to any time series or alerts when communicating with
   # external systems (federation, remote storage, Alertmanager).
@@ -16,7 +20,7 @@ scrape_configs:
   - job_name: 'prometheus'
 
     # Override the global default and scrape targets from this job every 5 seconds.
-    scrape_interval: 5s
+    scrape_interval: 2s
 
     # scheme defaults to 'http' enable https in case your application is server via https
     #scheme: https

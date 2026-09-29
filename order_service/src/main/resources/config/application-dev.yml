@@ -15,9 +15,15 @@
 
 logging:
   level:
+<<<<<<< Updated upstream
     ROOT: INFO
     tech.jhipster: DEBUG
     org.hibernate.SQL: INFO
+=======
+    ROOT: ERROR
+    tech.jhipster: ERROR
+    org.hibernate.SQL: ERROR
+>>>>>>> Stashed changes
     com.ecommerce.order: DEBUG
 
 management:
@@ -128,23 +134,41 @@ jhipster:
 resilience4j:
   circuitbreaker:
     instances:
-      inventory-service-getProducts:
-        slidingWindowSize: 10
-        failureRateThreshold: 50
-        waitDurationInOpenState: 10s
-        permittedNumberOfCallsInHalfOpenState: 3
+      inventory-service-getProducts: # or your specific circuit breaker name
+        sliding-window-type: COUNT_BASED
+        sliding-window-size: 60
+        minimum-number-of-calls: 20
+        failure-rate-threshold: 50
+        slow-call-rate-threshold: 50
+        slow-call-duration-threshold: 1000ms
+        wait-duration-in-open-state: 10000ms
+        permitted-number-of-calls-in-half-open-state: 10
+        automatic-transition-from-open-to-half-open-enabled: true
       payment-service-createPayment:
-        slidingWindowSize: 10
-        failureRateThreshold: 50
-        waitDurationInOpenState: 20s
-        slowCallRateThreshold: 50
-        slowCallDurationThreshold: 2s
-  retry:
-    instances:
-      inventory-service-getProducts:
-        maxAttempts: 3
-        waitDuration: 500ms
-      payment-service-createPayment:
-        maxAttempts: 2
-        waitDuration: 1s
+        sliding-window-type: COUNT_BASED
+        sliding-window-size: 60
+        minimum-number-of-calls: 20
+        failure-rate-threshold: 50
+        slow-call-rate-threshold: 50
+        slow-call-duration-threshold: 1000ms
+        wait-duration-in-open-state: 10000ms
+        permitted-number-of-calls-in-half-open-state: 10
+        automatic-transition-from-open-to-half-open-enabled: true
+#    retry:
+#      instances:
+#        inventory-service-getProducts:
+#          maxAttempts: 3
+#          waitDuration: 500ms
+#        payment-service-createPayment:
+#          maxAttempts: 2
+#          waitDuration: 1s
+feign:
+  client:
+    config:
+      default:
+        #readTimeout: 5000 # Allow the 1200ms request to finish
+        connectTimeout: 5000
+        readTimeout: 5000 # Higher than your max chaos delay
+
+
 

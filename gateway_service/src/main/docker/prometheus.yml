@@ -4,7 +4,19 @@ services:
   prometheus:
     image: prom/prometheus
     container_name: prometheus
+    user: "0:0" # To BYPASS THE LOCK/PeRMIssion error ( use this for db backup test)
     volumes:
       - ./central-server-config/prometheus-config.yml:/etc/prometheus/prometheus.yml
+      - prometheus_db:/prometheus
     ports:
       - "9090:9090" # UI and API for ML Service
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.path=/prometheus'
+      - '--web.enable-admin-api'
+
+# THIS IS THE PART YOU ARE LIKELY MISSING:
+# This declares the volume so that the service can find it.
+volumes:
+  prometheus_db:
+    driver: local
