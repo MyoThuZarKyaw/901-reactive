@@ -47,9 +47,9 @@ public class CircuitBreakerAlertListener implements MessageListener {
                         cb.transitionToOpenState();
                     });
 
-                circuitBreakerRegistry
-                    .circuitBreaker("paymentServiceClient")
-                    .transitionToOpenState();
+//                circuitBreakerRegistry
+//                    .circuitBreaker("paymentServiceClient")
+//                    .transitionToOpenState();
             }
         } catch (IOException e) {
             log.error("Error while processing the message", e);

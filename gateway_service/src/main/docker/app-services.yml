@@ -1,0 +1,31 @@
+# This configuration is intended for development purpose, it's **your** responsibility to harden it for production
+name: 901_app_services
+services:
+  gateway-service:
+    extends:
+      file: ./app-services/gateway_service.yml
+      service: gateway-service
+    networks:
+      - 901-reactive-gateway
+  inventory-service:
+    extends:
+      file: ./app-services/inventory_service.yml
+      service: inventory-service
+    networks:
+      - 901-reactive-gateway
+  order-service:
+    extends:
+      file: ./app-services/order_service.yml
+      service: order-service
+    networks:
+      - 901-reactive-gateway
+  payment-service:
+    extends:
+      file: ./app-services/payment_service.yml
+      service: payment-service
+    networks:
+      - 901-reactive-gateway
+
+networks:
+  901-reactive-gateway:
+    external: true

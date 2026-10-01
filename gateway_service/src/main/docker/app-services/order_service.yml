@@ -1,0 +1,35 @@
+# This configuration is intended for development purpose, it's **your** responsibility to harden it for production
+name: 901_reactive_services
+services:
+  order-service:
+    image: order_service
+    environment:
+      - _JAVA_OPTIONS=-Xmx512m -Xms256m
+      - SPRING_PROFILES_ACTIVE=dev,chaos-monkey
+      - MANAGEMENT_PROMETHEUS_METRICS_EXPORT_ENABLED=true
+      - SPRING_CLOUD_CONSUL_HOST=consul
+      - SPRING_CLOUD_CONSUL_PORT=8500
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgresql:5432/order_service
+      - SPRING_DATASOURCE_USERNAME=order_service
+      - SPRING_DATASOURCE_PASSWORD=
+      - SPRING_LIQUIBASE_URL=jdbc:postgresql://postgresql:5432/order_service
+      - MANAGEMENT_OTLP_METRICS_EXPORT_URL=http://otel-collector:4318/v1/metrics
+      - MANAGEMENT_OPENTELEMETRY_TRACING_EXPORT_OTLP_ENDPOINT=http://otel-collector:4318/v1/traces
+      - SPRING_DATA_REDIS_HOST=redis
+      - SPRING_DATA_REDIS_PORT=6379
+    healthcheck:
+      test:
+        - CMD-SHELL
+        - "bash -c 'exec 3<>/dev/tcp/127.0.0.1/8085; printf \"GET
+          /management/health HTTP/1.0\\r\\nHost: localhost\\r\\n\\r\\n\" >&3;
+          grep -q \"\\\"status\\\":\\\"UP\\\"\" <&3'"
+      interval: 5s
+      timeout: 5s
+      retries: 40
+    networks:
+      - 901-reactive-gateway
+
+networks:
+  901-reactive-gateway:
+    external: true
+

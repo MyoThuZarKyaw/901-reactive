@@ -8,6 +8,11 @@
   "scripts": {
     "app:start": "./mvnw -ntp --batch-mode",
     "app:up": "docker compose -f src/main/docker/app.yml up --wait",
+    "app-services:up": "docker compose -f src/main/docker/app-services.yml up --wait",
+    "app-services:gateway:up": "docker compose -f src/main/docker/app-services/gateway_service.yml up --wait",
+    "app-services:inventory:up": "docker compose -f src/main/docker/app-services/inventory_service.yml up --wait",
+    "app-services:order:up": "docker compose -f src/main/docker/app-services/order_service.yml up --wait",
+    "app-services:payment:up": "docker compose -f src/main/docker/app-services/payment_service.yml up --wait",
     "backend:build-cache": "./mvnw dependency:go-offline -ntp",
     "backend:debug": "./mvnw -Dspring-boot.run.jvmArguments=\"-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:8000\"",
     "backend:doc:test": "./mvnw -ntp javadoc:javadoc --batch-mode",

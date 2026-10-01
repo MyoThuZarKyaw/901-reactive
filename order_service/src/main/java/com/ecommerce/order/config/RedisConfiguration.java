@@ -1,9 +1,11 @@
 package com.ecommerce.order.config;
 
 import com.ecommerce.order.redis.CircuitBreakerAlertListener;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
+import org.springframework.data.redis.connection.RedisStandaloneConfiguration;
 import org.springframework.data.redis.connection.lettuce.LettuceConnectionFactory;
 import org.springframework.data.redis.listener.ChannelTopic;
 import org.springframework.data.redis.listener.RedisMessageListenerContainer;
@@ -15,10 +17,18 @@ public class RedisConfiguration {
 
     public static final String CIRCUIT_BREAKER_CHANNEL = "circuit-breaker-channel";
 
-    @Bean
-    public RedisConnectionFactory lettuceConnectionFactory() {
-        return new LettuceConnectionFactory();
-    }
+//    @Value("${spring.data.redis.host:localhost}")
+//    private String redisHost;
+//
+//    @Value("${spring.data.redis.port:6379}")
+//    private int redisPort;
+//
+//    @Bean
+//    public RedisConnectionFactory lettuceConnectionFactory() {
+//        // Pass the host and port so it reads from environment variables!
+//        RedisStandaloneConfiguration serverConfig = new RedisStandaloneConfiguration(redisHost, redisPort);
+//        return new LettuceConnectionFactory(serverConfig);
+//    }
 
     @Bean
     MessageListenerAdapter messageListenerAdapter(CircuitBreakerAlertListener listener) {
