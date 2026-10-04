@@ -109,7 +109,8 @@ spring:
         service-name: order_service
       config:
         watch:
-          enabled: false
+          enabled: true
+          delay: 2000 # Check Consul every 2 seconds for changes
   docker:
     compose:
       enabled: false
