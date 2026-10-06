@@ -4,7 +4,7 @@ services:
     image: otel/opentelemetry-collector
     user: "0" # Grant the container permission to write to Mac folder; Use the ID "0" instead of the name "root"
     volumes:
-      - ./central-server-config/otel-config.yml:/etc/otelcol/config.yml
+      - ./central-server-config/otel-config.yaml:/etc/otelcol/config.yaml
       - ./otel-collector-files:/otel-collector-files
     ports:
       - 8888:8888 # Prometheus metrics exposed by the Collector
