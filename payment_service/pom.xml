@@ -342,6 +342,11 @@
             <groupId>tools.jackson.module</groupId>
             <artifactId>jackson-module-jaxb-annotations</artifactId>
         </dependency>
+        <dependency>
+          <groupId>org.projectlombok</groupId>
+          <artifactId>lombok</artifactId>
+          <optional>true</optional>
+        </dependency>
     </dependencies>
 
     <build>
@@ -480,6 +485,10 @@
                                 <groupId>org.glassfish.jaxb</groupId>
                                 <artifactId>jaxb-runtime</artifactId>
                             </path>
+                            <path>
+                              <groupId>org.projectlombok</groupId>
+                              <artifactId>lombok</artifactId>
+                            </path>
                         </annotationProcessorPaths>
                     </configuration>
                 </plugin>
@@ -615,6 +624,12 @@
                         Enable the line below to have remote debugging of your application on port 5005
                         <jvmArguments>-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=5005</jvmArguments>
                         -->
+                        <excludes>
+                          <exclude>
+                            <groupId>org.projectlombok</groupId>
+                            <artifactId>lombok</artifactId>
+                          </exclude>
+                        </excludes>
                     </configuration>
                 </plugin>
                 <plugin>
