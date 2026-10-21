@@ -54,6 +54,42 @@ spring:
           - git-branch=${git.branch:}
       host: localhost
       port: 8500
+    gateway:
+      routes:
+        - id: order_service
+          uri: lb://order-service
+          predicates:
+            - Path=/services/order-service/**
+          filters:
+            - StripPrefix=2
+            # name = The identifier of the circuit breaker instance (used for custom configurations)
+            - name: CircuitBreaker
+              args:
+                name: order-service
+                fallbackUri: forward:/fallback/order-service
+        - id: inventory_service
+          uri: lb://inventory-service
+          predicates:
+            - Path=/services/inventory-service/**
+          filters:
+            - StripPrefix=2
+            # name = The identifier of the circuit breaker instance (used for custom configurations)
+            - name: CircuitBreaker
+              args:
+                name: inventory-service
+                fallbackUri: forward:/fallback/inventory-service
+        - id: payment_service
+          uri: lb://payment-service
+          predicates:
+            - Path=/services/payment-service/**
+          filters:
+            - StripPrefix=2
+            # name = The identifier of the circuit breaker instance (used for custom configurations)
+            - name: CircuitBreaker
+              args:
+                name: payment-service
+                fallbackUri: forward:/fallback/payment-service
+
   liquibase:
     # Remove 'faker' if you do not want the sample data to be loaded automatically
     contexts: dev, faker
@@ -121,3 +157,24 @@ jhipster:
 # ===================================================================
 
 # application:
+
+resilience4j:
+  circuitbreaker:
+    configs:
+      default:
+        sliding-window-type: COUNT_BASED
+        sliding-window-size: 60
+        minimum-number-of-calls: 20
+        failure-rate-threshold: 50
+        slow-call-rate-threshold: 50
+        slow-call-duration-threshold: 1000ms
+        wait-duration-in-open-state: 10000ms
+        permitted-number-of-calls-in-half-open-state: 10
+        automatic-transition-from-open-to-half-open-enabled: true
+    instances:
+      order-service:
+        base-config: default
+      inventory-service:
+        base-config: default
+      payment-service:
+        base-config: default

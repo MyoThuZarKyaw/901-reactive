@@ -239,11 +239,3 @@ jhipster:
 # ===================================================================
 
 # application:
-spring:
-  data:
-    redis:
-      host: your-redis-host
-      port: 6379
-      password: your-password
-      database: 0
-      timeout: 2000ms
