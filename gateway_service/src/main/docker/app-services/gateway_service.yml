@@ -14,6 +14,7 @@ services:
       - SPRING_R2DBC_USERNAME=gateway_service
       - SPRING_R2DBC_PASSWORD=
       - SPRING_LIQUIBASE_URL=jdbc:postgresql://postgresql:5432/gateway_service
+      - OTEL_EXPORTER_OTLP_ENDPOINT=http://otel-collector:4318
       - SPRING_DATA_REDIS_HOST=redis
       - SPRING_DATA_REDIS_PORT=6379
     ports:

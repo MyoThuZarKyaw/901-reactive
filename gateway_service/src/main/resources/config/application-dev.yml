@@ -21,9 +21,9 @@ logging:
     com.ecommerce.gateway: DEBUG
 
 management:
-  zipkin: # Use the "zipkin" Maven profile to have the Spring Cloud Zipkin dependencies
-    tracing:
-      endpoint: http://localhost:9411/api/v2/spans
+#  zipkin: # Use the "zipkin" Maven profile to have the Spring Cloud Zipkin dependencies
+#    tracing:
+#      endpoint: http://localhost:9411/api/v2/spans
   tracing:
     sampling:
       probability: 1.0 # report 100% of traces
@@ -178,3 +178,36 @@ resilience4j:
         base-config: default
       payment-service:
         base-config: default
+
+otel:
+  service:
+    name: gateway-service
+
+  # Configure exporters for both traces and metrics
+  traces:
+    exporter: otlp
+  metrics:
+    exporter: otlp
+  logs:
+    exporter: none # Set to 'otlp' if application logs are forwarded to the collector
+
+  # Common OTLP endpoint configuration
+  exporter:
+    otlp:
+      endpoint: http://localhost:4318
+      protocol: http/protobuf
+
+  # Metrics tuning
+  metric:
+    export:
+      interval: 10000 # Export metrics every 10 seconds (default is 60000ms / 1 minute)
+
+  # Auto-instrumentation switches
+  instrumentation:
+    spring-webflux:
+      enabled: true
+    # Bridges Spring Boot Actuator / Micrometer metrics (JVM, CPU, GC, memory) to OpenTelemetry
+    micrometer:
+      enabled: true
+    r2dbc:
+      enabled: true

@@ -74,6 +74,14 @@
 
   <dependencyManagement>
     <dependencies>
+      <!-- OpenTelemetry Instrumentation BOM -->
+      <dependency>
+        <groupId>io.opentelemetry.instrumentation</groupId>
+        <artifactId>opentelemetry-instrumentation-bom</artifactId>
+        <version>2.32.0</version>
+        <type>pom</type>
+        <scope>import</scope>
+      </dependency>
       <dependency>
         <groupId>org.springframework.cloud</groupId>
         <artifactId>spring-cloud-dependencies</artifactId>
@@ -106,6 +114,10 @@
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-actuator</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>io.opentelemetry.instrumentation</groupId>
+      <artifactId>opentelemetry-spring-boot-starter</artifactId>
     </dependency>
     <dependency>
       <groupId>org.springframework.boot</groupId>
@@ -214,15 +226,15 @@
         </exclusion>
       </exclusions>
     </dependency>
-    <dependency>
-      <groupId>io.micrometer</groupId>
-      <artifactId>context-propagation</artifactId>
-      <version>${micrometer-context-propagation.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>io.micrometer</groupId>
-      <artifactId>micrometer-registry-prometheus</artifactId>
-    </dependency>
+<!--    <dependency>-->
+<!--      <groupId>io.micrometer</groupId>-->
+<!--      <artifactId>context-propagation</artifactId>-->
+<!--      <version>${micrometer-context-propagation.version}</version>-->
+<!--    </dependency>-->
+<!--    <dependency>-->
+<!--      <groupId>io.micrometer</groupId>-->
+<!--      <artifactId>micrometer-registry-prometheus</artifactId>-->
+<!--    </dependency>-->
     <dependency>
       <groupId>io.netty</groupId>
       <artifactId>netty-resolver-dns-native-macos</artifactId>
@@ -1204,25 +1216,25 @@
         </plugins>
       </build>
     </profile>
-    <profile>
-      <!--
-          Profile for tracing requests with Zipkin.
-      -->
-      <id>zipkin</id>
-      <dependencies>
-        <dependency>
-          <groupId>io.micrometer</groupId>
-          <artifactId>micrometer-tracing</artifactId>
-        </dependency>
-        <dependency>
-          <groupId>io.micrometer</groupId>
-          <artifactId>micrometer-tracing-bridge-brave</artifactId>
-        </dependency>
-        <dependency>
-          <groupId>io.zipkin.reporter2</groupId>
-          <artifactId>zipkin-reporter-brave</artifactId>
-        </dependency>
-      </dependencies>
-    </profile>
+<!--    <profile>-->
+<!--      &lt;!&ndash;-->
+<!--          Profile for tracing requests with Zipkin.-->
+<!--      &ndash;&gt;-->
+<!--      <id>zipkin</id>-->
+<!--      <dependencies>-->
+<!--        <dependency>-->
+<!--          <groupId>io.micrometer</groupId>-->
+<!--          <artifactId>micrometer-tracing</artifactId>-->
+<!--        </dependency>-->
+<!--        <dependency>-->
+<!--          <groupId>io.micrometer</groupId>-->
+<!--          <artifactId>micrometer-tracing-bridge-brave</artifactId>-->
+<!--        </dependency>-->
+<!--        <dependency>-->
+<!--          <groupId>io.zipkin.reporter2</groupId>-->
+<!--          <artifactId>zipkin-reporter-brave</artifactId>-->
+<!--        </dependency>-->
+<!--      </dependencies>-->
+<!--    </profile>-->
   </profiles>
 </project>

@@ -6,7 +6,6 @@ import io.github.resilience4j.circuitbreaker.CircuitBreakerRegistry;
 import io.micrometer.common.util.StringUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.jspecify.annotations.Nullable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.connection.Message;
 import org.springframework.data.redis.connection.MessageListener;
@@ -30,7 +29,7 @@ public class CircuitBreakerAlertListener implements MessageListener {
     private final CircuitBreakerRegistry circuitBreakerRegistry;
 
     @Override
-    public void onMessage(Message message, byte @Nullable [] pattern) {
+    public void onMessage(Message message, byte[] pattern) {
         try {
             String alertJson = new String(message.getBody(), StandardCharsets.UTF_8);
             log.info("Received a circuit breaker alert: {}", alertJson);
