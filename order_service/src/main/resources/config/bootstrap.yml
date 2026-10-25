@@ -33,3 +33,9 @@ spring:
       enabled: false
       lifecycle-management: start-only
       file: src/main/docker/postgresql.yml
+
+#1. pom.xml includes spring-cloud-starter-bootstrap → legacy bootstrap processing is active.
+#2. With bootstrap enabled, logging initializes twice: first in the bootstrap context, whose environment is only system/env vars + bootstrap.yml. application-dev.yml is invisible there.
+logging:
+  file:
+    name: logs/application.log
