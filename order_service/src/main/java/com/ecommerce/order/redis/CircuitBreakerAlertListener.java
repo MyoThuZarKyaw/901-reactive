@@ -29,7 +29,7 @@ public class CircuitBreakerAlertListener implements MessageListener {
     private final ObjectMapper objectMapper;
     private final CircuitBreakerRegistry circuitBreakerRegistry;
 
-    @Value("${application.circuit.breaker.alert.action.enable:true}")
+    @Value("${app_service.circuit.breaker.alert.action.enable:true}")
     private boolean alertActionEnabled;
 
     @Override
