@@ -239,3 +239,11 @@ jhipster:
 # ===================================================================
 
 # application:
+application:
+  circuit:
+    breaker:
+      alert:
+        action:
+          # Runtime toggling (no rebuild): env var APPLICATION_CIRCUIT_BREAKER_ALERT_ACTION_ENABLE=false,
+          # or the consul key app/circuit/breaker/alert/action/enable — both override the yml via relaxed binding.
+          enable: true

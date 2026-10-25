@@ -7,6 +7,7 @@ import io.micrometer.common.util.StringUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.connection.Message;
 import org.springframework.data.redis.connection.MessageListener;
 import org.springframework.stereotype.Component;
@@ -28,13 +29,17 @@ public class CircuitBreakerAlertListener implements MessageListener {
     private final ObjectMapper objectMapper;
     private final CircuitBreakerRegistry circuitBreakerRegistry;
 
+    @Value("${application.circuit.breaker.alert.action.enable:true}")
+    private boolean alertActionEnabled;
+
     @Override
     public void onMessage(Message message, byte[] pattern) {
         try {
             String alertJson = new String(message.getBody(), StandardCharsets.UTF_8);
             log.info("Received a circuit breaker alert: {}", alertJson);
             CircuitBreakerAlert alert = objectMapper.readValue(alertJson, CircuitBreakerAlert.class);
-            if(("DEGRADED".equalsIgnoreCase(alert.getStatus()) || "FAILED".equalsIgnoreCase(alert.getStatus()))
+            if(alertActionEnabled
+                        && ("DEGRADED".equalsIgnoreCase(alert.getStatus()) || "FAILED".equalsIgnoreCase(alert.getStatus()))
                         && StringUtils.isNotBlank(alert.getTargetService())) {
                 String serviceName = alert.getTargetService(); // e.g., "payment-service"
                 // Find ALL circuit breakers starting with this service name
