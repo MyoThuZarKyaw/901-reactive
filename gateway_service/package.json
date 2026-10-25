@@ -49,7 +49,7 @@
     "docker:redis:up": "docker compose -f src/main/docker/redis.yml up --wait",
     "docker:grafana:down": "docker compose -f src/main/docker/grafana.yml down -v",
     "docker:grafana:up": "docker compose -f src/main/docker/grafana.yml up --wait",
-    "java:docker": "./mvnw -ntp verify -DskipTests -Pprod jib:dockerBuild",
+    "java:docker": "./mvnw -ntp verify -DskipTests -Pdev,webapp jib:dockerBuild",
     "java:docker:arm64": "npm run java:docker -- -Djib-maven-plugin.architecture=arm64",
     "java:docker:dev": "npm run java:docker -- -Pdev,webapp",
     "java:docker:prod": "npm run java:docker -- -Pprod",
