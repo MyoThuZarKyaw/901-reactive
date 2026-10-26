@@ -12,7 +12,7 @@ processors:
 exporters:
   # Local Debugging and Monitoring
   debug:
-    verbosity: detailed
+    verbosity: basic
 
   file/rotation_with_default_settings:
     path: /otel-collector-files/otel-data.log
