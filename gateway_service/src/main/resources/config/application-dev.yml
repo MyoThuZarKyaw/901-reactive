@@ -190,6 +190,7 @@ otel:
     exporter: otlp
   metrics:
     exporter: otlp
+    step: 10s
   logs:
     exporter: none # Set to 'otlp' if application logs are forwarded to the collector
 
@@ -202,7 +203,7 @@ otel:
   # Metrics tuning
   metric:
     export:
-      interval: 10000 # Export metrics every 10 seconds (default is 60000ms / 1 minute)
+      interval: 2000 # Export metrics every 10 seconds (default is 60000ms / 1 minute)
 
   # Auto-instrumentation switches
   instrumentation:
