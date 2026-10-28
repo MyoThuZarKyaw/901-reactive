@@ -29,3 +29,4 @@ management:
            - caches
            - liquibase
            - chaosmonkey
+           - metrics

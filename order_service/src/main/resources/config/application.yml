@@ -50,6 +50,7 @@ management:
           - threaddump
           - caches
           - liquibase
+          - metrics
   endpoint:
     health:
       show-details: when_authorized
@@ -239,6 +240,11 @@ jhipster:
 # ===================================================================
 
 # application:
+server:
+  tomcat:
+    mbeanregistry:
+      enabled: true
+
 app_service:
   circuit:
     breaker:

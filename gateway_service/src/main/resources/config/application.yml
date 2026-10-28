@@ -52,6 +52,7 @@ management:
           - prometheus
           - threaddump
           - liquibase
+          - metrics
   endpoint:
     health:
       show-details: when_authorized
