@@ -7,7 +7,6 @@ import io.github.resilience4j.circuitbreaker.CircuitBreakerRegistry;
 import io.github.resilience4j.core.registry.EntryAddedEvent;
 import io.github.resilience4j.core.registry.EntryRemovedEvent;
 import io.github.resilience4j.core.registry.EntryReplacedEvent;
-import io.github.resilience4j.core.registry.RegistryEventConsumer;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -36,7 +35,7 @@ import java.util.concurrent.ConcurrentMap;
  *  - https://docs.spring.io/spring-data/redis/reference/4.0/redis/pubsub.html
  *  - https://docs.spring.io/spring-boot/4.0/appendix/application-properties/index.html#application-properties.data.spring.data.redis.port
  */
-public class CircuitBreakerAlertAndRegistryEventListener implements MessageListener, RegistryEventConsumer<CircuitBreaker> {
+public class CircuitBreakerAlertAndRegistryEventListener implements MessageListener {
 
     private final ObjectMapper objectMapper;
     private final CircuitBreakerRegistry circuitBreakerRegistry;
@@ -80,7 +79,7 @@ public class CircuitBreakerAlertAndRegistryEventListener implements MessageListe
                 new BreakerStatus(event.getStateTransition().getToState(), event.getCreationTime())
             );
             // This prints EVERY state change (e.g., CLOSED_TO_OPEN, OPEN_TO_HALF_OPEN, HALF_OPEN_TO_CLOSED)
-            log.info("🔄 Circuit Breaker '{}' changed state: {} at {}",
+            log.info("Circuit Breaker '{}' changed state: {} at {}",
                 event.getCircuitBreakerName(),
                 event.getStateTransition(),
                 event.getCreationTime());
@@ -105,8 +104,8 @@ public class CircuitBreakerAlertAndRegistryEventListener implements MessageListe
                     .forEach(cb -> {
                         BreakerStatus tracked = breakerStates.get(cb.getName());
                         CircuitBreaker.State current = tracked != null ? tracked.state() : cb.getState();
-                        if (current == CircuitBreaker.State.CLOSED) {
-                            log.info("Skipping trip for circuit breaker: {} (state=CLOSED)", cb.getName());
+                        if (current != CircuitBreaker.State.CLOSED) {
+                            log.info("Skipping trip for circuit breaker: {} (state={})", cb.getName(), current);
                             return;
                         }
                         ZonedDateTime changedAt = tracked != null ? tracked.stateChangeTime() : null;
@@ -127,17 +126,14 @@ public class CircuitBreakerAlertAndRegistryEventListener implements MessageListe
         }
     }
 
-    @Override
     public void onEntryAddedEvent(EntryAddedEvent<CircuitBreaker> entryAddedEvent) {
         attachStateListener(entryAddedEvent.getAddedEntry());
     }
 
-    @Override
     public void onEntryRemovedEvent(EntryRemovedEvent<CircuitBreaker> entryRemoveEvent) {
         breakerStates.remove(entryRemoveEvent.getRemovedEntry().getName());
     }
 
-    @Override
     public void onEntryReplacedEvent(EntryReplacedEvent<CircuitBreaker> entryReplacedEvent) {
         attachStateListener(entryReplacedEvent.getNewEntry());
     }
