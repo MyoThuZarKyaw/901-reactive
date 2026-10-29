@@ -1,6 +1,6 @@
 package com.ecommerce.gateway.config;
 
-import com.ecommerce.gateway.redis.CircuitBreakerAlertListener;
+import com.ecommerce.gateway.redis.CircuitBreakerAlertAndRegistryEventListener;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
@@ -28,7 +28,7 @@ public class RedisConfiguration {
 //    }
 
     @Bean
-    MessageListenerAdapter messageListenerAdapter(CircuitBreakerAlertListener listener) {
+    MessageListenerAdapter messageListenerAdapter(CircuitBreakerAlertAndRegistryEventListener listener) {
         return new MessageListenerAdapter(listener);
     }
 

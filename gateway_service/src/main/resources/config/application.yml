@@ -253,3 +253,7 @@ app_service:
           # Runtime toggling (no rebuild): env var APPLICATION_CIRCUIT_BREAKER_ALERT_ACTION_ENABLE=false,
           # or the consul key app_service/circuit/breaker/alert/action/enable — both override the yml via relaxed binding.
           enable: true
+          # Min seconds since last state change before a FAILED alert may trip a non-CLOSED breaker.
+          # <=0 disables the time check (state-only check remains).
+          # Override via env APPLICATION_CIRCUIT_BREAKER_ALERT_ACTION_TRIP_COOLDOWN_SECONDS
+          trip-cooldown-seconds: 10

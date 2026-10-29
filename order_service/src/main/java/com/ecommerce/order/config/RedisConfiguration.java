@@ -1,12 +1,9 @@
 package com.ecommerce.order.config;
 
-import com.ecommerce.order.redis.CircuitBreakerAlertListener;
-import org.springframework.beans.factory.annotation.Value;
+import com.ecommerce.order.redis.CircuitBreakerAlertAndRegistryEventListener;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
-import org.springframework.data.redis.connection.RedisStandaloneConfiguration;
-import org.springframework.data.redis.connection.lettuce.LettuceConnectionFactory;
 import org.springframework.data.redis.listener.ChannelTopic;
 import org.springframework.data.redis.listener.RedisMessageListenerContainer;
 import org.springframework.data.redis.listener.adapter.MessageListenerAdapter;
@@ -31,7 +28,7 @@ public class RedisConfiguration {
 //    }
 
     @Bean
-    MessageListenerAdapter messageListenerAdapter(CircuitBreakerAlertListener listener) {
+    MessageListenerAdapter messageListenerAdapter(CircuitBreakerAlertAndRegistryEventListener listener) {
         return new MessageListenerAdapter(listener);
     }
 
