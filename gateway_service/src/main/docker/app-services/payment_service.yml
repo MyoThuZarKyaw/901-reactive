@@ -19,6 +19,8 @@ services:
       - MANAGEMENT_OPENTELEMETRY_TRACING_EXPORT_OTLP_ENDPOINT=http://otel-collector:4318/v1/traces
       - SPRING_DATA_REDIS_HOST=redis
       - SPRING_DATA_REDIS_PORT=6379
+    volumes:
+      - ./logs/payment-service:/tmp/logs
     healthcheck:
       test:
         - CMD-SHELL

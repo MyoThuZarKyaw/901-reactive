@@ -120,7 +120,7 @@ spring:
             - JWTRelay
           discovery:
             locator:
-              enabled: true
+              enabled: false
               lower-case-service-id: true
               predicates:
                 - name: Path
