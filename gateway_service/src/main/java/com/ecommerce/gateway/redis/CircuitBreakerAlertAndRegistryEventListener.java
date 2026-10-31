@@ -46,6 +46,9 @@ public class CircuitBreakerAlertAndRegistryEventListener implements MessageListe
     @Value("${app_service.circuit.breaker.alert.action.trip-cooldown-seconds:10}")
     private long tripCooldownSeconds;
 
+    @Value("${app_service.circuit.breaker.alert.action.min-confidence:8.5}")
+    private float minConfidence;
+
     private final ConcurrentMap<String, BreakerStatus> breakerStates = new ConcurrentHashMap<>();
 
     public record BreakerStatus(CircuitBreaker.State state, ZonedDateTime stateChangeTime) {}
@@ -95,6 +98,11 @@ public class CircuitBreakerAlertAndRegistryEventListener implements MessageListe
             if (alertActionEnabled
                         && "FAILED".equalsIgnoreCase(alert.getStatus())
                         && StringUtils.isNotBlank(alert.getTargetService())) {
+                if (alert.getConfidence() < minConfidence) {
+                    log.info("Skipping alert action: confidence={} below threshold={} for target={}",
+                        alert.getConfidence(), minConfidence, alert.getTargetService());
+                    return;
+                }
                 String serviceName = alert.getTargetService(); // e.g., "payment-service"
                 ZonedDateTime receivedAt = ZonedDateTime.now();
                 // Find ALL circuit breakers starting with this service name

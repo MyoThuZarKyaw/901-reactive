@@ -16,5 +16,6 @@ public class CircuitBreakerAlert {
     private String targetService;
     private String status;
     private Instant timestamp;
+    private float confidence;
 
 }
