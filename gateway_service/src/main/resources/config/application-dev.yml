@@ -21,6 +21,7 @@ logging:
     com.ecommerce.gateway: DEBUG
     io.micrometer.registry.otlp: INFO
     org.springframework.boot.actuate.autoconfigure.metrics: INFO
+    com.ecommerce.gateway.web.rest.CircuitBreakersFallbackController: INFO
 
 management:
 #  zipkin: # Use the "zipkin" Maven profile to have the Spring Cloud Zipkin dependencies
