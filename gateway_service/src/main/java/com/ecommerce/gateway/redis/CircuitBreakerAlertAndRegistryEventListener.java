@@ -46,7 +46,7 @@ public class CircuitBreakerAlertAndRegistryEventListener implements MessageListe
     @Value("${app_service.circuit.breaker.alert.action.trip-cooldown-seconds:10}")
     private long tripCooldownSeconds;
 
-    @Value("${app_service.circuit.breaker.alert.action.min-confidence:0.75}")
+    @Value("${app_service.circuit.breaker.alert.action.min-confidence:0.85}")
     private float minConfidence;
 
     private final ConcurrentMap<String, BreakerStatus> breakerStates = new ConcurrentHashMap<>();
